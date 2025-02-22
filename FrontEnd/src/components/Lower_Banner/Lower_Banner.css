@@ -1,0 +1,100 @@
+/* Main Container */
+.subscription-container {
+    background: linear-gradient(to right, #243673, #000000);
+    background-color: #243673;
+  border-radius: 20px;
+  padding: 10px 60px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  max-width: 1130px;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  margin-left: 110px;
+  margin-right: 60px;
+}
+
+/* Text Styles */
+.subscription-text {
+  color: #ffffff;
+  font-size: 1.5rem;
+  margin-right: 100px;
+  /* margin-right: -px; */
+  font-family: Arial, sans-serif;
+  text-align: left;
+  flex: 1;
+}
+
+/* Form Container */
+.subscription-form {
+  display: flex;
+  align-items: left;
+  flex: 1;
+  width: auto;
+}
+
+/* Email Input */
+.email-input {
+  flex: 1;
+  padding: 12px 15px;
+  border: none;
+  border-radius: 50px 0 0 50px;
+  outline: none;
+  font-size: 1rem;
+  color: #333;
+}
+
+.email-input::placeholder {
+  color: #999;
+}
+
+/* Subscribe Button */
+.subscribe-button {
+  background-color: #3f5efb;
+  color: #ffffff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 0 50px 50px 0;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.subscribe-button:hover {
+  background-color: #3752d9;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .subscription-container {
+    flex-direction: column; /* Stack the content vertically */
+    padding: 20px; /* Adjust padding for mobile */
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  .subscription-text {
+    margin-bottom: 15px;
+    margin-right: -20px; /* Add space between text and input box */
+    text-align: center; /* Center align text on mobile */
+  }
+
+  .subscription-form {
+    flex-direction: column; /* Stack input and button vertically */
+    align-items: center; /* Center align input and button */
+    width: 100%;
+  }
+
+  .email-input {
+    margin-bottom: 10px;
+    width: 90%; 
+    border-radius: 50px;
+  }
+
+  .subscribe-button {
+    width: 97%; /* Make the button take full width */
+    border-radius: 50px;
+  }
+}

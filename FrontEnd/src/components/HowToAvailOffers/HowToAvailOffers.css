@@ -1,0 +1,156 @@
+/* Container */
+.offers-container {
+  padding: 2rem;
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+  text-align: center;
+  margin-top: 4rem; /* Ensure sufficient separation from the component above */
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.offers-title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #333;
+}
+
+/* Timeline Layout */
+.timeline {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.timeline-item {
+  display: flex;
+  flex-direction: row; /* Default alignment */
+  margin: 1.5rem 0;
+  align-items: center;
+  position: relative;
+}
+
+/* For items aligned to the left */
+.timeline-item.left {
+  flex-direction: row-reverse; /* Reverse for left alignment */
+}
+
+.timeline-item.right {
+  text-align: left;
+}
+
+/* Default alignment for icons */
+.timeline-icon {
+  width: 40px;
+  height: 40px;
+  background-color: #e0e0e0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 1rem; /* Space between icon and content */
+  font-size: 1.2rem;
+  color: #555;
+}
+
+/* Active icons */
+.active-icon {
+  background-color: #1d3275;
+  color: #fff;
+}
+
+/* Timeline Content */
+.timeline-content {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  flex: 1;
+}
+
+.timeline-content h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.2rem;
+  color: #1d3275;
+}
+
+.timeline-content p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.timeline-content a {
+  color: #1d3275;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* Contact Button */
+.contact-button {
+  margin-top: 2rem;
+}
+
+.contact-button button {
+  background-color: #1d3275;
+  color: #fff;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+.contact-button button:hover {
+  background-color: #143366;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .timeline-item {
+      flex-direction: column;
+      text-align: center;
+  }
+
+  .timeline-icon {
+      margin: 0.5rem auto;
+  }
+
+  .timeline-content {
+      text-align: center;
+      margin-top: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .offers-title {
+      font-size: 1.5rem;
+  }
+
+  .timeline-content h3 {
+      font-size: 1rem;
+  }
+
+  .timeline-content p {
+      font-size: 0.85rem;
+  }
+
+  .timeline-item {
+      margin: 1rem 0;
+  }
+
+  .timeline-content {
+      padding: 1rem;
+  }
+
+  .timeline-icon {
+      width: 35px;
+      height: 35px;
+  }
+
+  .contact-button button {
+      font-size: 0.9rem;
+      padding: 0.6rem 1rem;
+  }
+}

@@ -1,0 +1,100 @@
+/* General Styles */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+}
+
+.commitment-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 40px 10%;
+  background-color: #f9f9f9; /* Light background */
+  gap: 30px;
+}
+
+.commitment-content {
+  flex: 1;
+  max-width: 50%;
+}
+
+.commitment-content h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #000;
+}
+
+.commitment-content h2 span {
+  color: #000; /* Bold color for emphasis */
+}
+
+.commitment-content p {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 30px;
+  line-height: 1.8;
+}
+
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 20px;
+  background-color: #3d5afe; /* Blue button */
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cta-button span {
+  margin-left: 8px;
+  font-weight: 800;
+}
+
+.cta-button:hover {
+  background-color: #1e3ab1; /* Darker blue */
+}
+
+.commitment-image {
+  flex: 2;
+  max-width: 50%;
+  background-image: url("../../Assets/Images/about-1.jpg"); /* Ensure this path is correct */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 10px;
+  height: 300px; /* Set height for testing purposes */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease; /* Smooth transition for image scaling */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .commitment-section {
+    flex-direction: column; /* Stack the content vertically on small screens */
+    text-align: center; /* Center the text */
+  }
+  .commitment-content {
+    max-width: 100%; /* Full width for both content and image */
+  }
+
+  .commitment-content h2 {
+    font-size: 2rem; /* Reduce heading size for smaller screens */
+  }
+
+  .cta-button {
+    padding: 10px 18px; /* Adjust button padding for smaller screens */
+  }
+
+  .commitment-image {
+    height: 250px; /* Adjust image height for smaller screens */
+    margin-top: 20px; /* Add space between text and image */
+    background-position: center center; /* Center the image */
+  }
+}

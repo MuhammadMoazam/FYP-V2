@@ -1,0 +1,94 @@
+/* General Styles */
+.terms-container {
+  padding: 50px;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+  display: flex; /* Apply flexbox layout */
+  flex-direction: column; /* Stack content vertically */
+  justify-content: flex-start; /* Align the content to the top */
+  align-items: flex-start; /* Align items to the start of the container */
+}
+
+.terms-title {
+  font-size: 2.7rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #243673;
+}
+
+.terms-subheading {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-top: 30px;
+  margin-bottom: 15px;
+  color: #243673;
+}
+
+.terms-section-title {
+  font-size: 1.7rem;
+  font-weight: 700;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: #243673;
+}
+
+/* Paragraph Styles */
+p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+ul {
+  margin-left: 20px;
+  list-style-type: disc;
+}
+
+ul li {
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+
+/* Links Styling */
+a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Additional Styling for Contact Info */
+ul li a {
+  color: #2c3e50;
+}
+
+ul li a:hover {
+  color: #3498db;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .terms-container {
+    padding: 15px;
+    align-items: center; /* Center align content on smaller screens */
+  }
+
+  .terms-title {
+    font-size: 2rem;
+  }
+
+  .terms-subheading {
+    font-size: 1.5rem;
+  }
+
+  .terms-section-title {
+    font-size: 1.2rem;
+  }
+
+  p, ul li {
+    font-size: 0.9rem;
+  }
+}

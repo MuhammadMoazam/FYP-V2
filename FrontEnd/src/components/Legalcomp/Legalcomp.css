@@ -1,0 +1,94 @@
+/* General Styles */
+.legal-container {
+  padding: 50px;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.legal-title {
+  font-size: 2.7rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #243673;
+}
+
+.legal-subheading {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-top: 30px;
+  margin-bottom: 15px;
+  color: #243673;
+}
+
+.legal-section-title {
+  font-size: 1.7rem;
+  font-weight: 700;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: #243673;
+}
+
+/* Paragraph Styles */
+p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+ul {
+  margin-left: 20px;
+  list-style-type: disc;
+}
+
+ul li {
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+
+/* Links Styling */
+a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Additional Styling for Contact Info */
+ul li a {
+  color: #2c3e50;
+}
+
+ul li a:hover {
+  color: #3498db;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .legal-container {
+    padding: 15px;
+    align-items: center;
+  }
+
+  .legal-title {
+    font-size: 2rem;
+  }
+
+  .legal-subheading {
+    font-size: 1.5rem;
+  }
+
+  .legal-section-title {
+    font-size: 1.2rem;
+  }
+
+  p, ul li {
+    font-size: 0.9rem;
+  }
+}

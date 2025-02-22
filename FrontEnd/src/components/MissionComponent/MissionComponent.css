@@ -1,0 +1,127 @@
+.mission-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 5%;
+  gap: 2rem;
+}
+
+
+.mission-text {
+  max-width: 50%;
+}
+
+.mission-text h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  line-height: 1.4;
+  color: #1a1a1a;
+}
+
+.mission-text p {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  color: #555;
+}
+
+.mission-icons {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.icon i {
+  font-size: 1.5rem;
+  color: #4a90e2;
+}
+
+.icon span {
+  font-size: 1rem;
+  color: #333;
+}
+
+.shop-now-btn {
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #243673;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.mission-image {
+  position: relative;
+  max-width: 45%;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.mission-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.testimonial {
+  position: relative;
+   bottom: 1%; 
+  left: 10%; /* Align with the reference spacing */
+  margin-top: -30px;
+  width: 60%; /* Match the testimonial box width */
+  background: linear-gradient(to left, #243673, #121469);
+  background-color: #243673;
+  color:#fff; /* White text color */
+  padding: 1rem 1rem; /* Add internal spacing for text */
+  border-radius: 9px; /* Rounded corners for the box */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  font-size: 0.90rem; /* Adjust font size to match reference */
+}
+
+.testimonial strong {
+  display: block;
+  font-size: 1.1rem; /* Larger font for the name */
+  margin-bottom: 0.5rem; /* Spacing between name and quote */
+}
+
+/* Media Query for Smaller Screens */
+@media (max-width: 768px) {
+  .mission-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .mission-text {
+    max-width: 100%;
+  }
+
+  .mission-text h1 {
+    font-size: 2rem;
+  }
+
+  .mission-text p {
+    font-size: 0.95rem;
+  }
+
+  .mission-icons {
+    justify-content: center;
+  }
+
+  .mission-image {
+    max-width: 100%;
+    margin-top: 2rem;
+  }
+
+  .testimonial {
+    position: static;
+    margin-top: 1rem;
+    width: auto;
+  }
+}

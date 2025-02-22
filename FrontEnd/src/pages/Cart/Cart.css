@@ -1,0 +1,219 @@
+.cart-page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    padding-top: 10vh;
+}
+
+.cart-items-container {
+    height: auto;
+    width: 100%;
+    margin-top: 5rem;
+    padding: 5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+}
+
+.cart-texts-container {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+    justify-content: center;
+}
+
+.cart-items-content {
+    width: 100%;
+    max-width: 1000px;
+    height: auto;
+    margin-top: 5rem;
+    padding: 20px;
+    background-color: transparent;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    align-items: center;
+    justify-content: center;
+}
+
+.cart-items-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    overflow: hidden;
+    text-align: center;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.cart-item-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
+.cart-item-container {
+    border-bottom: 1px solid #ccc;
+}
+
+.table-container {
+    padding: 16px;
+}
+
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-header th {
+    padding: 8px;
+    text-align: left;
+}
+
+.table-row {
+    text-align: center;
+}
+
+.table-cell {
+    padding: 8px;
+}
+
+.product-image {
+    width: 50px;
+    height: 50px;
+    margin-right: 8px;
+}
+
+.remove-button {
+    border: none;
+    background-color: transparent;
+    color: red;
+    cursor: pointer;
+}
+
+.coupon-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 40px;
+    gap: 10px;
+}
+
+.coupon-input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 70%;
+}
+
+.coupon-button {
+    width: 30%;
+    padding: 10px;
+    color: #3b4fe4;
+    border: solid 1px #3b4fe4;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.cart-total-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 40px;
+    font-weight: bold;
+}
+
+@media screen and (min-width: 1200px) {
+    .cart-items-container {
+        width: 90%;
+        flex-direction: row;
+        padding: 0;
+        margin-bottom: 5rem;
+    }
+
+    .cart-items-content {
+        margin-left: 5rem;
+        margin-top: 0;
+    }
+}
+
+.input-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+}
+
+.submit-button {
+    width: 30%;
+    color: white;
+    display: flex;
+    align-self: center;
+    justify-content: center;
+    margin-top: 1rem;
+    border-radius: 0.5rem;
+    background-color: #3b4fe4;
+    cursor: pointer;
+}
+
+.quantity-button {
+    border: 1px solid grey;
+    border-radius: 3px;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+}
+
+@media screen and (max-width: 700px) {
+    .cart-items-container {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .cart-items-container {
+        padding: 1rem;
+        margin-bottom: 5rem;
+    }
+
+    .cart-texts-container {
+        width: 100%;
+    }
+}
+
+.heading-1-style {
+    font-weight: 600;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 14.4px;
+    color: gray;
+}
+
+.heading-2-style {
+    font-family: monospace;
+    color: gray;
+}
+
+.input-style {
+    width: 100%;
+    height: 40px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

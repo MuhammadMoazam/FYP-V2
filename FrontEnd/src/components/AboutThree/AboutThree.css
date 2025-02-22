@@ -1,0 +1,112 @@
+
+/*  */
+/* 
+
+
+/*  */
+/* Testimonial Section */
+/*  */
+/*  */
+/* General Section Styling */
+.testimonial-section {
+  margin-top: 40px;
+    padding-top: 60px;
+    padding-bottom: 60px ;
+    padding-left: 120px;
+    padding-right: 120px;
+  background-color: #ffffff;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+/* Heading Styling */
+.testimonial-heading {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 16px;
+}
+
+/* Description Styling */
+.testimonial-description {
+  color: #555555;
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 30px;
+}
+
+/* Bold Text Styling */
+.bold-text {
+  font-weight: bold;
+  color: #000000;
+}
+
+/* Grid Layout for Logos */
+.logo-grid {
+    padding-left: 12%;
+    padding-right: 12%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+  margin-top: 20px;
+  border-color: #000;
+}
+
+/* Individual Logo Card */
+.logo-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  background-color: #ffffff;
+  border: 1px solid #dddddd;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+}
+
+/* Logo Icon Styling */
+.company-logo {
+  font-size: 40px;
+  color: #555555; /* Default gray */
+}
+
+/* Company-Specific Logo Colors */
+.apple {
+  color: #333333; /* Apple's Black/Grey */
+}
+
+.amazon {
+  color: #ff9900; /* Amazon's Orange */
+}
+
+.google {
+  color: #4285f4; /* Google's Blue */
+}
+
+.microsoft {
+  color: #f25022; /* Microsoft's Orange */
+}
+
+/* Responsive Design: 2 Columns on Medium Screens */
+@media (max-width: 768px) {
+  .logo-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+    .testimonial-section{
+      padding: 10px;
+    }
+}
+@media (max-width: 1024px) {
+  
+    .testimonial-section{
+      padding: 20px;
+    }
+}
+
+
+/* Responsive Design: 1 Column on Small Screens */
+@media (max-width: 480px) {
+  .logo-grid {
+    grid-template-columns: 1fr;
+  }
+}

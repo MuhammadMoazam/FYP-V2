@@ -1,0 +1,157 @@
+/* ImageWithText.css */
+.image-container1 {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  background-image: url('../../Assets/Images/contact.jpg'); /* Replace with your image URL */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-bottom-right-radius: 110px;
+  margin-top: -17px;
+  /* opacity: 0.7; */
+}
+
+.image-container1::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(20, 20, 20, 0.5); 
+  z-index: 1;
+  border-bottom-right-radius: 110px;
+}
+
+/* Text overlay */
+.image-overlay1 {
+  position: absolute;
+  top: 50%;
+  left: 30%;
+  transform: translate(-50%, -50%);
+  color: white;
+  text-align: left;
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 2; /* Make sure the text is above the overlay */
+}
+
+.heading-top1 {
+  font-size: 4em;
+  margin-left: -190px;
+  color: white;
+}
+
+.description-top1 {
+  font-size: 1.2em;
+  margin-top: 10px;
+  /* margin-left: 15%; */
+}
+
+/* Media Queries for responsiveness */
+
+/* For small screens (up to 480px) */
+@media screen and (max-width: 480px) {
+  .image-container1 {
+    height: 300px; /* Adjust image height */
+    border-bottom-right-radius: 40px;
+  }
+
+  .image-container1::before {
+    border-bottom-right-radius: 40px;
+  }
+
+  .image-overlay1 {
+    left: 50%; /* Center the text horizontally */
+    padding: 15px; /* Reduce padding */
+    text-align: left; /* Center align text for smaller screens */
+  }
+
+  .heading-top1 {
+    font-size: 2.5em; /* Reduce font size for heading */
+  }
+
+  .description-top1 {
+    font-size: 1em; /* Adjust description font size */
+  }
+}
+
+/* For medium screens (up to 768px) */
+@media screen and (max-width: 768px) {
+  .image-container1 {
+    height: 400px; /* Adjust image height */
+    border-bottom-right-radius: 70px;
+  }
+
+  .image-container1::before {
+    border-bottom-right-radius: 70px;
+  }
+
+  .image-overlay1 {
+    left: 50%; /* Center the text horizontally */
+    padding: 20px;
+    text-align: left; /* Center align text */
+  }
+
+  .heading-top1 {
+    font-size: 3em; /* Reduce font size for heading */
+  }
+
+  .description-top1 {
+    font-size: 1.1em; /* Adjust description font size */
+  }
+}
+
+/* For larger screens (up to 1024px) */
+@media screen and (max-width: 1024px) {
+  .image-container1 {
+    height: 450px; /* Slightly smaller height for tablets */
+    border-bottom-right-radius: 100px; /* Adjust border radius */
+  }
+
+  .image-container1::before {
+    border-bottom-right-radius: 100px;
+  }
+
+  .image-overlay1 {
+    left: 35%; /* Adjust left positioning for medium screens */
+    padding: 25px;
+    text-align: left;
+  }
+
+  .heading-top1 {
+    font-size: 3.5em; /* Heading size adjustment */
+  }
+
+  .description-top1 {
+    font-size: 1.2em; /* Adjust description font size */
+  }
+}
+
+/* For larger screens (above 1024px) */
+@media screen and (min-width: 1025px) {
+  .image-container1 {
+    height: 500px; /* Standard height */
+    border-bottom-right-radius: 150px;
+  }
+
+  .image-container1::before {
+    border-bottom-right-radius: 150px;
+  }
+
+  .image-overlay1 {
+    left: 30%; /* Adjust left positioning for large screens */
+    padding: 30px;
+    text-align: left; /* Align text to the left */
+  }
+
+  .heading-top1 {
+    font-size: 4em; /* Keep larger font size for large screens */
+  }
+
+  .description-top1 {
+    font-size: 1.2em; /* Standard description font size */
+  }
+}
+

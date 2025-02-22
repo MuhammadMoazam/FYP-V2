@@ -1,0 +1,210 @@
+.checkout-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  padding-top: 10vh;
+}
+
+.order-items-container {
+  height: auto;
+  width: 100%;
+  margin-top: 5rem;
+  padding: 5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+}
+
+.checkout-details-container {
+  display: flex;
+  width: 500px;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+  justify-content: center;
+}
+
+.order-items-content {
+  width: 500px;
+  max-width: 1000px;
+  height: auto;
+  margin-top: 5rem;
+  padding: 20px;
+  background-color: transparent;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  border-radius: 5px;
+  justify-content: center;
+}
+
+.order-items-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  overflow: hidden;
+  text-align: center;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.order-item-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+
+.order-item-container {
+  border-bottom: 1px solid #ccc;
+}
+
+.table-container {
+  padding: 16px;
+}
+
+.product-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-header th {
+  padding: 8px;
+  text-align: left;
+  color: #3b4fe4;
+}
+
+.table-row {
+  text-align: start;
+}
+
+.table-cell {
+  padding: 8px;
+}
+
+.coupon-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 40px;
+  gap: 10px;
+}
+
+.coupon-button {
+  width: 30%;
+  padding: 10px;
+  color: #3b4fe4;
+  border: solid 1px #3b4fe4;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.order-total-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 40px;
+  font-weight: bold;
+}
+
+@media screen and (min-width: 1200px) {
+  .order-items-container {
+    width: 90%;
+    flex-direction: row;
+    padding: 0;
+    margin-bottom: 5rem;
+  }
+
+  .order-items-content {
+    margin-left: 5rem;
+    margin-top: 0;
+  }
+}
+
+.name-inputs-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  justify-content: space-between;
+}
+
+.input-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+}
+
+.submit-button {
+  width: 30%;
+  color: white;
+  align-self: center;
+  display: flex;
+  padding: 10px;
+  border-radius: 0.5rem;
+  background-color: #3b4fe4;
+  cursor: pointer;
+}
+
+.additional-info-container {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+  padding: 20px;
+  background-color: transparent;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  justify-content: center;
+}
+
+@media screen and (max-width: 700px) {
+  .order-items-container {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .order-items-container {
+    padding: 1rem;
+    margin-bottom: 5rem;
+  }
+
+  .checkout-details-container {
+    width: 100%;
+  }
+}
+
+.heading-1-style {
+  font-weight: 600;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 14.4px;
+  color: gray;
+}
+
+.heading-2-style {
+  font-family: monospace;
+  color: gray;
+}
+
+.input-style {
+  width: 100%;
+  height: 40px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

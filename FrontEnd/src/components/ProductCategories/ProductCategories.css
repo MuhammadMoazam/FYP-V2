@@ -1,0 +1,105 @@
+.product-categories-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 40px 20px; /* Added more padding for better spacing */
+  }
+  
+  .product-categories-container h2 {
+    font-size: 32px; /* Increased font size */
+    margin-bottom: 30px; /* Increased margin for more separation */
+    font-weight: bold; /* Made the title bold */
+  }
+  
+  .categories-grid {
+    display: flex; /* Changed to flex for side-by-side layout */
+  }
+  
+  .left-category {
+    flex: 1; /* Takes up remaining space */
+    margin-right: 20px; /* Space between left and right categories */
+  }
+  
+  .right-categories {
+    display: flex;
+    flex-direction: column; /* Stack rows vertically */
+  }
+  
+  .top-row,
+  .bottom-row {
+    display: flex; /* Flex for horizontal layout */
+    justify-content: space-between; /* Space out cards evenly */
+  }
+  
+  .category-card {
+    flex: 1; /* Equal size for each card */
+    margin: 0 10px; /* Space between cards */
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px; /* Adjusted radius for rounded corners */
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    transition: transform 0.3s; /* Added transition for hover effect */
+  }
+  
+  .category-card:hover {
+    transform: scale(1.03); /* Slight zoom on hover */
+  }
+  
+  .category-image {
+    width: 100%;
+    height: 200px; /* Fixed height for consistency */
+    object-fit: cover; /* Ensures images cover the area without distortion */
+    border-radius: 12px; /* Match rounded corners */
+  }
+  
+  .category-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.5);
+    color:white;
+    padding: 15px; /* Increased padding for content */
+    text-align: center; /* Centered text */
+  }
+  
+  .category-info h3 {
+    margin: 0;
+    font-size: 16px; /* Adjusted font size */
+    font-weight: bold; /* Made the title bold */
+    color: #1f1d1d; /* Darker color for better readability */
+  }
+  
+  .category-info p {
+    margin: 5px 0 0;
+    font-size: 14px;
+    color: #555; /* Darker color for better readability */
+  }
+  
+  /* Grey Bar for Winter Specials */
+.winter-special-bar {
+    position: absolute;
+    bottom: 0; /* Align to bottom */
+    left: 0;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.5); /* White background with slight transparency */
+    color: #333; /* Match text color */
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 15px 0; /* Padding for spacing */
+    text-align: center;
+    z-index: 10; 
+  }
+  
+  
+  .left-category .category-card {
+    position: relative; /* Ensures child elements like the overlay are positioned correctly */
+  }
+  
+  .left-category .category-image {
+    width: 100%;
+    height: 400px; /* Custom height */
+    object-fit: cover;
+    border-radius: 12px; /* Rounded corners */
+  }
+  

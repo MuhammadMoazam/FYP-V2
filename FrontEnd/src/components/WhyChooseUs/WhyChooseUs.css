@@ -1,0 +1,79 @@
+.choose-us {
+    text-align: center;
+    margin: 40px 0;
+}
+
+.choose-us h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.content {
+    display: flex;
+    align-items: flex-start; /* Align items to the top */
+    justify-content: center;
+    gap: 20px; /* Space between elements */
+}
+
+.with-us, .competitors {
+    border: 2px solid #007bff; /* Blue border */
+    border-radius: 8px;
+    padding: 20px;
+    width: 300px; /* Fixed width */
+    background-color: #ffffff; /* White background */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative; /* Required for the divider */
+}
+
+.with-us h3, .competitors h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    font-size: 1rem;
+    margin: 10px 0;
+}
+
+.divider {
+    width: 20px; /* Width of the divider space */
+    border-left: 2px solid #007bff; /* Vertical line color */
+    height: 100%; /* Full height */
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .content {
+        flex-direction: column;
+        align-items:center ;
+    }
+
+    .with-us, .competitors {
+        width: 80%; /* Full width on smaller screens */
+        margin-bottom: 20px;
+    }
+
+    .divider {
+        display: none; /* Hide the divider on smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .choose-us h2 {
+        font-size: 2rem;
+    }
+
+    .with-us h3, .competitors h3 {
+        font-size: 1.25rem;
+    }
+
+    li {
+        font-size: 0.9rem;
+    }
+}

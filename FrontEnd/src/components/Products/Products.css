@@ -1,0 +1,118 @@
+.products-container {
+    text-align: center;
+    margin: 20px;
+    padding: 25px;
+  }
+  
+  .slider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:white;
+    box-shadow: none;
+  }
+  .titlee{
+    font-size: xx-large;
+    font-weight: 600;
+     color: #2e3a79;
+  }
+  .slider-button {
+    background-color: #ccc;
+    border: none;
+    margin-left: 8px;
+    margin-right: 8px;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 24px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .slider-button:hover {
+    background-color: #aaa;
+  }
+  
+  .products-grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+  }
+  
+  .product-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 0px;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.5s;
+    width: 205px; /* Fixed width for the card */
+  }
+    .product-card h2{
+      font-size: 1.2rem;
+      font-weight: 700;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin-bottom: 5px;
+    }
+  .product-name{
+    font-size: 16px;
+    
+  }
+  .prod{
+    padding: 10px;
+  }
+  .product-card:hover {
+    transition: 0.3s ease-in-out;
+    transform: scale(1.02); 
+  }
+  
+  .discount {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: red;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+  }
+  
+  img {
+    width: auto;
+    height: auto;
+    border-radius: 15px;
+  }
+  
+  .price {
+    font-size: 1.2em;
+    /* margin-top: 30px; */
+  }
+  
+  .original-price {
+    text-decoration: line-through;
+    color: #888;
+    margin-right: 10px;
+    margin-top: 20px;
+  }
+  
+  .discounted-price {
+    margin-top: 20px;
+    color: green;
+    font-weight: bold;
+  }
+  
+  /* Media Queries */
+  @media (max-width: 768px) {
+    .product-card {
+      width: 150px; /* Adjust width for smaller screens */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .product-card {
+      width: 120px; /* Adjust width for extra small screens */
+    }
+  }
+.prod1{
+  padding: 10px;
+}
