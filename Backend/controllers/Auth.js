@@ -1,10 +1,10 @@
-const User = require("../models/User");
+const User = require("../Services/User_Service/models/userModel");
 const bcrypt = require("bcryptjs");
-const { sendMail } = require("../utils/Emails");
-const { generateOTP } = require("../utils/GenerateOtp");
-const Otp = require("../models/OTP");
-const { sanitizeUser } = require("../utils/SanitizeUser");
-const { generateToken } = require("../utils/GenerateToken");
+const { sendMail } = require("../Services/User_Service/utils/Emails");
+const { generateOTP } = require("../Services/User_Service/utils/GenerateOtp");
+const Otp = require("../Services/User_Service/models/Otp");
+const { sanitizeUser } = require("../Services/User_Service/utils/SanitizeUser");
+const { generateToken } = require("../Services/User_Service/utils/GenerateToken");
 
 exports.signup = async (req, res) => {
   try {

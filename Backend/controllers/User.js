@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
-const User = require("../models/User");
-const { sanitizeUser } = require("../utils/SanitizeUser");
+const User = require("../Services/User_Service/models/userModel");
+const { sanitizeUser } = require("../Services/User_Service/utils/SanitizeUser");
 
 const getUserData = async (req, res) => {
     try {

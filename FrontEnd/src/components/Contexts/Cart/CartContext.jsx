@@ -10,47 +10,50 @@ const CartContextProvider = ({ children }) => {
     const { loggedIn } = useUser()
     const { fetchCartItems, addCartItem: addCartItemApi, removeCartItem: removeCartItemApi, updateCartItem: updateCartItemApi, emptyCart: emptyCartApi } = useApi();
 
-    const [cartItems, setCartItems] = useState([])
+    const [cart, setCart] = useState()
 
     const getCartItems = async () => {
         try {
+            console.log('runs');
+            
             if (!loggedIn) {
                 const cartCookie = Cookies.get('cart');
                 if (!cartCookie) {
                     return;
                 }
-                setCartItems(JSON.parse(cartCookie));
+                setCart(JSON.parse(cartCookie));
                 return;
             }
-            const response = await fetchCartItems();
 
-            setCartItems(response);
+            const response = await fetchCartItems();
+            setCart(response || null);
         } catch (error) {
             console.log(error)
         }
     }
 
-    const addCartItem = async (item) => {
+    const addCartItem = async (item, price) => {
         try {
             if (!loggedIn) {
                 const cartCookie = Cookies.get('cart');
                 const cartItem = {
                     _id: item,
+                    product: item,
                     quantity: 1,
-                    product: item
+                    total: price * 1
                 }
                 let cart = [];
                 if (cartCookie) {
                     cart = JSON.parse(cartCookie);
                 }
-                cart.push(cartItem);
+                cart.products.push(cartItem);
                 Cookies.set('cart', JSON.stringify(cart));
                 getCartItems();
                 return true;
             }
             const response = await addCartItemApi(item);
 
-            setCartItems([...cartItems, response]);
+            setCart(response);
             return true;
         } catch (error) {
             console.log("🚀 -------------------------------🚀")
@@ -65,14 +68,14 @@ const CartContextProvider = ({ children }) => {
             if (!loggedIn) {
                 const cartCookie = Cookies.get('cart');
                 const cart = JSON.parse(cartCookie);
-                const newCart = cart.filter(cartItem => cartItem._id !== item);
-                Cookies.set('cart', JSON.stringify(newCart));
+                const products = cart.prodcuts.filter(cartItem => cartItem._id !== item);
+                Cookies.set('cart', JSON.stringify({ ...cart, products }));
                 getCartItems();
                 return true;
             }
-            await removeCartItemApi(item);
+            const cart = await removeCartItemApi(item);
 
-            setCartItems(cartItems.filter(cartItem => cartItem._id !== item));
+            setCart(cart);
             return true;
         } catch (error) {
             console.log("🚀 ----------------------------------🚀")
@@ -87,24 +90,19 @@ const CartContextProvider = ({ children }) => {
             if (!loggedIn) {
                 const cartCookie = Cookies.get('cart');
                 const cart = JSON.parse(cartCookie);
-                const newCart = cart.map(cartItem => {
+                const products = cart.prodcuts.map(cartItem => {
                     if (cartItem._id === item) {
-                        return { ...cartItem, quantity };
+                        return { ...cartItem, quantity, total: cartItem.total / cartItem.quantity * quantity };
                     }
                     return cartItem;
                 });
-                Cookies.set('cart', JSON.stringify(newCart));
+                Cookies.set('cart', JSON.stringify({ ...cart, products }));
                 getCartItems();
                 return true;
             }
-            await updateCartItemApi(item, quantity);
+            const cart = await updateCartItemApi(item, quantity);
 
-            setCartItems(cartItems.map(cartItem => {
-                if (cartItem._id === item) {
-                    return { ...cartItem, quantity };
-                }
-                return cartItem;
-            }));
+            setCart(cart);
             return true;
         } catch (error) {
             console.log("🚀 ----------------------------------🚀")
@@ -123,7 +121,7 @@ const CartContextProvider = ({ children }) => {
             }
             await emptyCartApi();
 
-            setCartItems([]);
+            setCart([]);
             return true;
         } catch (error) {
             console.log("🚀 ----------------------------------🚀")
@@ -134,11 +132,11 @@ const CartContextProvider = ({ children }) => {
     }
 
     const clearCart = () => {
-        setCartItems([]);
+        setCart([]);
     }
 
     const contextValue = {
-        cartItems,
+        cart,
         getCartItems,
         addCartItem,
         removeCartItem,

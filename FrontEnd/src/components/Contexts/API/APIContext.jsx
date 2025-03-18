@@ -9,7 +9,7 @@ export const ApiContext = createContext(undefined);
 
 const ApiContextProvider = ({ children }) => {
 
-    const { login, updateCart, cartItems, addCartItem: addToCart } = useUser()
+    const { login, authToken, setAuthToken } = useUser()
 
     const forgotPassword = async (email) => {
         try {
@@ -66,7 +66,11 @@ const ApiContextProvider = ({ children }) => {
             const token = Cookies.get('session')
             if (token) {
                 const apiResponse = await axios.get(`${serverURL}/api/get-user-data`, { headers: { Authorization: token } })
-                login({ user: apiResponse.data, token })
+                if (apiResponse.status === 200) {
+                    setAuthToken(token)
+                    login({ user: apiResponse.data, token })
+                }
+                return { message: 'authenticated' }
             };
         } catch (error) {
             if (error.response.status === 401) {
@@ -109,10 +113,12 @@ const ApiContextProvider = ({ children }) => {
         }
     }
 
-    const updateUser = async ({ userName, names, passwords, email }) => {
+    const updateUser = async ({ userName, name, passwords, email }) => {
         try {
-            const token = Cookies.get('session')
-            const response = await axios.post(`${serverURL}/api/update-user`, { userName, names, passwords, email }, { headers: { Authorization: token } })
+            if (!authToken) {
+                return { message: 'unauthorized' }
+            }
+            const response = await axios.post(`${serverURL}/api/update-user`, { userName, name, passwords, email }, { headers: { Authorization: authToken } })
 
             return response.data
         } catch (error) {
@@ -131,15 +137,9 @@ const ApiContextProvider = ({ children }) => {
 
     const fetchProducts = async () => {
         try {
-            const response = await axios.get(`${serverURL}/api/products`);
+            const response = await axios.get(`${serverURL}/api/get-products`);
 
-            console.log("🚀 ---------------------------------------🚀")
-            console.log("🚀 ~ fetchProducts ~ response:", response)
-            console.log("🚀 ---------------------------------------🚀")
             if (response.status === 200 && response.data) {
-                console.log("🚀 -------------------------------------------------🚀")
-                console.log("🚀 ~ fetchProducts ~ response.data:", response.data)
-                console.log("🚀 -------------------------------------------------🚀")
                 return response.data;
             }
         } catch (err) {
@@ -152,9 +152,11 @@ const ApiContextProvider = ({ children }) => {
 
     const fetchCartItems = async () => {
         try {
-            const token = Cookies.get('session')
-            const response = await axios.get(`${serverURL}/api/cart/get-items`, { headers: { Authorization: token } });
+            if (!authToken) {
+                return { message: 'unauthorized' }
+            }
 
+            const response = await axios.get(`${serverURL}/api/get-cart-items`, { headers: { Authorization: authToken } });
             if (response.status === 200 && response.data) {
                 return response.data;
             }
@@ -168,10 +170,12 @@ const ApiContextProvider = ({ children }) => {
 
     const addCartItem = async (item) => {
         try {
-            const token = Cookies.get('session')
-            const response = await axios.post(`${serverURL}/api/cart/add-item`, { item }, { headers: { Authorization: token } });
+            if (!authToken) {
+                return { message: 'unauthorized' }
+            }
+            const response = await axios.post(`${serverURL}/api/add-cart-item`, { item }, { headers: { Authorization: authToken } });
 
-            if (response.status === 201 && response.data) {
+            if (response.status === 200 && response.data) {
                 return response.data;
             }
         } catch (err) {
@@ -184,11 +188,13 @@ const ApiContextProvider = ({ children }) => {
 
     const removeCartItem = async (item) => {
         try {
-            const token = Cookies.get('session')
-            const response = await axios.post(`${serverURL}/api/cart/remove-item`, { item }, { headers: { Authorization: token } });
+            if (!authToken) {
+                return { message: 'unauthorized' }
+            }
+            const response = await axios.post(`${serverURL}/api/remove-cart-item`, { item }, { headers: { Authorization: authToken } });
 
             if (response.status === 200 && response.data) {
-                return true;
+                return response.data;
             }
         } catch (err) {
             console.log("🚀 ------------------------------🚀")
@@ -200,8 +206,10 @@ const ApiContextProvider = ({ children }) => {
 
     const updateCartItem = async (item, quantity) => {
         try {
-            const token = Cookies.get('session')
-            const response = await axios.post(`${serverURL}/api/cart/update-item`, { item, quantity }, { headers: { Authorization: token } });
+            if (!authToken) {
+                return { message: 'unauthorized' }
+            }
+            const response = await axios.post(`${serverURL}/api/update-cart-item`, { item, quantity }, { headers: { Authorization: authToken } });
 
             if (response.status === 200 && response.data) {
                 return response.data;
@@ -216,8 +224,10 @@ const ApiContextProvider = ({ children }) => {
 
     const emptyCart = async () => {
         try {
-            const token = Cookies.get('session')
-            const response = await axios.get(`${serverURL}/api/cart/empty`, { headers: { Authorization: token } });
+            if (!authToken) {
+                return { message: 'unauthorized' }
+            }
+            const response = await axios.get(`${serverURL}/api/empty-cart`, { headers: { Authorization: authToken } });
 
             if (response.status === 200 && response.data) {
                 return true;
@@ -229,6 +239,97 @@ const ApiContextProvider = ({ children }) => {
             return null;
         }
     };
+
+    const placeOrder = async (order_details) => {
+        try {
+            if (!authToken) {
+                return { message: 'unauthorized' }
+            }
+            const response = await axios.post(`${serverURL}/api/place-order`, { order_details }, { headers: { Authorization: authToken } });
+
+            if (response.status === 200 && response.data) {
+                return response.data;
+            }
+        } catch (err) {
+            console.log("🚀 --------------------------🚀")
+            console.log("🚀 ~ placeOrder ~ err:", err)
+            console.log("🚀 --------------------------🚀")
+            return null;
+        }
+    };
+
+    const cancelOrder = async (order) => {
+        try {
+            if (!authToken) {
+                return { message: 'unauthorized' }
+            }
+            const response = await axios.post(`${serverURL}/api/cancel-order`, { order }, { headers: { Authorization: authToken } });
+
+            if (response.status === 200 && response.data) {
+                return response.data;
+            }
+        } catch (err) {
+            console.log("🚀 ---------------------------🚀")
+            console.log("🚀 ~ cancelOrder ~ err:", err)
+            console.log("🚀 ---------------------------🚀")
+            return null;
+        }
+    };
+
+
+    const initiatePaymentIntent = async (order) => {
+        try {
+            if (!authToken) {
+                return { message: 'unauthorized' }
+            }
+            const response = await axios.post(`${serverURL}/api/create-payment-intent`, { order }, { headers: { Authorization: authToken } });
+
+            if (response.status === 200 && response.data) {
+                return response.data;
+            }
+        } catch (err) {
+            console.log("🚀 ------------------------------🚀")
+            console.log("🚀 ~ initiatePaymentIntent ~ err:", err)
+            console.log("🚀 ------------------------------🚀")
+            return null;
+        }
+    };
+
+    const getPaymentIntent = async (id) => {
+        try {
+            if (!authToken) {
+                return { message: 'unauthorized' }
+            }
+            const response = await axios.post(`${serverURL}/api/get-payment-intent`, { id }, { headers: { Authorization: authToken } });
+
+            if (response.status === 200 && response.data) {
+                return response.data;
+            }
+        } catch (err) {
+            console.log("🚀 --------------------------------🚀")
+            console.log("🚀 ~ getPaymentIntent ~ err:", err)
+            console.log("🚀 --------------------------------🚀")
+            return null;
+        }
+    };
+
+    const confirmPaymentIntent = async (paymentIntentId) => {
+        try {
+            if (!authToken) {
+                return { message: 'unauthorized' }
+            }
+            const response = await axios.post(`${serverURL}/api/confirm-payment-intent`, { paymentIntentId }, { headers: { Authorization: authToken } });
+
+            if (response.status === 200 && response.data) {
+                return response.data;
+            }
+        } catch (err) {
+            console.log("🚀 ------------------------------🚀")
+            console.log("🚀 ~ confirmPaymentIntent ~ err:", err)
+            console.log("🚀 ------------------------------🚀")
+            return null;
+        }
+    }
 
     const contextValue = {
         forgotPassword,
@@ -243,7 +344,12 @@ const ApiContextProvider = ({ children }) => {
         addCartItem,
         removeCartItem,
         updateCartItem,
-        emptyCart
+        emptyCart,
+        placeOrder,
+        cancelOrder,
+        initiatePaymentIntent,
+        getPaymentIntent,
+        confirmPaymentIntent
     };
 
     return (

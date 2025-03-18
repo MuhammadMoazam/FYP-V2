@@ -32,7 +32,7 @@ const VerifyOTP = () => {
 
             if (response) {
                 login(response)
-                navigate('/account')
+                navigate('/account', { replace: true })
             }
 
             setLoading(false)

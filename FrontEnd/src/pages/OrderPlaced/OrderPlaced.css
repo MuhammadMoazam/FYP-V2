@@ -1,0 +1,27 @@
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding-top: 10vh;
+}
+
+.payment-status {
+  width: 500px;
+  max-width: 1000px;
+  height: auto;
+  margin: 5rem;
+  padding: 20px;
+  background-color: transparent;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  border-radius: 5px;
+  justify-content: center;
+}
+
+.payment-status h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #333;
+}

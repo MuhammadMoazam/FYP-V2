@@ -16,7 +16,7 @@ const Shop = () => {
 
   const { products: allProducts, getProducts } = useProducts();
   const {
-    cartItems,
+    cart,
     addCartItem,
     removeCartItem: removeCartItemApi,
     updateCartItem,
@@ -58,7 +58,9 @@ const Shop = () => {
   async function initialize() {
     setLoading(true);
     try {
-      await getProducts();
+      if (!allProducts || allProducts.length === 0) {
+        await getProducts();
+      }
       setProducts(allProducts);
     } catch (error) {
       console.log("🚀 ------------------------------🚀");
@@ -70,14 +72,14 @@ const Shop = () => {
     }
   }
 
-  const handleAddToCart = async (product) => {
+  const handleAddToCart = async (product, price) => {
     setLoading(product);
-    const itemExists = cartItems.some((item) => item.product === product);
+    const itemExists = cart?.products?.some((item) => item.product === product);
     if (itemExists) {
       setLoading("");
       return;
     }
-    await addCartItem(product);
+    await addCartItem(product, price);
     setLoading("");
   };
 
@@ -152,7 +154,7 @@ const Shop = () => {
                   <button
                     disabled={loading === product._id}
                     tabIndex={10}
-                    onClick={() => handleAddToCart(product._id)}
+                    onClick={() => handleAddToCart(product._id, product.price)}
                     className="cart-button"
                   >
                     {loading === product._id ? (
@@ -163,11 +165,11 @@ const Shop = () => {
                         aria-label="Loading Spinner"
                         data-testid="loader"
                       />
-                    ) : cartItems.some(
-                        (item) => item.product === product._id
-                      ) ? (
+                    ) : cart?.products?.some(
+                      (item) => item.product === product._id
+                    ) ? (
                       (() => {
-                        const item = cartItems.find(
+                        const item = cart?.products?.find(
                           (item) => item.product === product._id
                         );
                         return (
@@ -218,15 +220,15 @@ const Shop = () => {
                   </button>
 
                   <p>
-                    {product.originalPrice && (
+                    {product.price && (
                       <span className="old-price">
                         <span className="price-label">Original Price: </span>$
-                        {product.originalPrice}
+                        {product.price}
                       </span>
                     )}
                     <span className="new-price">
                       <span className="price-label">Discounted Price: </span>$
-                      {product.discountedPrice || product.price}
+                      {(Number.parseInt(product.price) * (1 - Number.parseInt(product.discount) / 100))}
                     </span>
                   </p>
                 </div>

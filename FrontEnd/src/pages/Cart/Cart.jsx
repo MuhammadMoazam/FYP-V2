@@ -1,5 +1,5 @@
 import Navbar from "../../components/Navbar/Navbar";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from 'react-router-dom';
 import "./Cart.css";
 import emptyCartImage from '../../Assets/Images/empty-cart.png';
@@ -13,20 +13,21 @@ function Cart() {
     const navigate = useNavigate()
 
     const { products } = useProducts()
-    const { getCartItems, cartItems, removeCartItem, updateCartItem } = useCart()
+    const { getCartItems, cart, removeCartItem, updateCartItem } = useCart()
 
-    const [selected, setSelected] = useState(0);
     const [localCartItems, setLocalCartItems] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    function setupCart() {
-        const updatedCartItems = cartItems.map(cartItem => {
+    const setupCart = useCallback(async () => {
+        if (!cart) return;
+        const _cart_products = cart?.products?.map(cartItem => {
             const product = products.find(product => product._id === cartItem.product);
-            return product && { ...product, quantity: cartItem.quantity, _id: cartItem._id };
+            return product && { ...product, quantity: cartItem.quantity, _id: cartItem._id, total: cartItem.total };
         }).filter(item => item);
-        setLocalCartItems(updatedCartItems ?? []);
+
+        setLocalCartItems(_cart_products ?? []);
         setLoading(false);
-    }
+    }, [cart, products]);
 
     async function removeProduct(item) {
         setLoading(true);
@@ -46,7 +47,7 @@ function Cart() {
 
     useEffect(() => {
         setupCart();
-    }, [cartItems, products]);
+    }, [cart, products, setupCart]);
 
     useEffect(() => {
         getCartItems();
@@ -96,13 +97,13 @@ function Cart() {
                                                         <img src={item.imgSrc} alt={item.name} className="product-image" />
                                                         {item.name}
                                                     </td>
-                                                    <td className="table-cell">{item.discountedPrice}</td>
+                                                    <td className="table-cell">{item.price}</td>
                                                     <td className="table-cell" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100px' }}>
                                                         <button className="quantity-button" disabled={item.quantity === 1} onClick={() => changeQuantity(item._id, item.quantity - 1)}>-</button>
                                                         {item.quantity}
                                                         <button className="quantity-button" onClick={() => changeQuantity(item._id, item.quantity + 1)}>+</button>
                                                     </td>
-                                                    <td className="table-cell">{item.discountedPrice * item.quantity}</td>
+                                                    <td className="table-cell">{item.total}</td>
                                                 </tr>
                                             ))}
                                         </tbody>
@@ -119,7 +120,9 @@ function Cart() {
                                         <span>Cart Total</span>
 
                                         <span>
-                                            {localCartItems.reduce((total, item) => total + item.discountedPrice * item.quantity, 0)}
+                                            {
+                                                cart.total
+                                            }
                                         </span>
                                     </div>
 
