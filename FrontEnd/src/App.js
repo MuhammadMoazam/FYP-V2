@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
@@ -48,7 +49,7 @@ const AppRoutes = () => {
     checkAuth();
     getProducts();
     getCartItems();
-  }, []);
+  }, [checkForAuthentication, getCartItems, getProducts]);
 
   return (
     <Routes>
