@@ -5,8 +5,22 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js",
-    "seed": "node seed/seed.js",
+    "install-main": "npm install",
+    "dev:main": "nodemon index.js",
+    "install:user": "npm --prefix Services/User_Service install",
+    "dev:user": "npm --prefix Services/User_Service run dev",
+    "install:product": "npm --prefix Services/Product_Service install",
+    "dev:product": "npm --prefix Services/Product_Service run dev",
+    "install:cart": "npm --prefix Services/Cart_Service install",
+    "dev:cart": "npm --prefix Services/Cart_Service run dev",
+    "install:order": "npm --prefix Services/Order_Service install",
+    "dev:order": "npm --prefix Services/Order_Service run dev",
+    "install:payment": "npm --prefix Services/Payment_Service install",
+    "dev:payment": "npm --prefix Services/Payment_Service run dev",
+    "install:logs": "npm --prefix Services/Logs_Service install",
+    "dev:logs": "npm --prefix Services/Logs_Service run dev",
+    "install-all": "concurrently -n main,user,product,cart,order,payment,logs -c magenta, cyan,green,yellow,blue,red,gray \"npm run install:main\" \"npm run install:user\" \"npm run install:product\" \"npm run install:cart\" \"npm run install:order\" \"npm run install:payment\" \"npm run install:logs\"",
+    "dev": "concurrently -n main,user,product,cart,order,payment,logs -c magenta,cyan,green,yellow,blue,red,gray \"npm run dev:main\" \"npm run dev:user\" \"npm run dev:product\" \"npm run dev:cart\" \"npm run dev:order\" \"npm run dev:payment\" \"npm run dev:logs\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -27,6 +41,7 @@
     "stripe": "^17.7.0"
   },
   "devDependencies": {
+    "concurrently": "^9.1.2",
     "nodemon": "^3.1.9"
   }
 }

@@ -1,86 +1,65 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
 import useCart from "../Contexts/Cart/useCart";
 import "./ProductDetail.css";
+import useProducts from "components/Contexts/Products/useProducts";
+import Loading from "components/Loading/Loading";
 
 const ProductDetail = () => {
-  const { id } = useParams(); // Retrieve product ID from URL
   const navigate = useNavigate();
-  const { addCartItem } = useCart();
+
+  const { products } = useProducts();
+  const { cart, addCartItem, updateCartItem } = useCart();
+
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(0);
   const [addingToCart, setAddingToCart] = useState(false);
 
   useEffect(() => {
-    const fetchProductDetails = async () => {
-      try {
-        setLoading(true);
-        console.log("Fetching product with ID:", id);
+    const url = new URL(window.location.href);
+    const params = new URLSearchParams(url.search);
+    const id = params.get("id");
+    const product = products.find((p) => p._id === id);
+    if (!product)
+      navigate("/shop"); // Navigate back to shop if product not found
 
-        const response = await fetch(
-          `http://localhost:5000/api/products/${id}`
-        );
-        console.log("Response status:", response.status);
-
-        if (!response.ok) {
-          const errorText = await response.text();
-          console.error("Error response:", errorText);
-          throw new Error(
-            `Failed to fetch product (Status: ${response.status}). ${errorText}`
-          );
-        }
-
-        const data = await response.json();
-        console.log("Received product data:", data);
-
-        if (!data) {
-          throw new Error("No product data received");
-        }
-
-        setProduct(data);
-      } catch (error) {
-        console.error("Error fetching product details:", error);
-        setError(error.message);
-        if (error.message.includes("404")) {
-          setTimeout(() => {
-            navigate("/shop"); // Navigate back to shop if product not found
-          }, 3000);
-        }
-      } finally {
-        setLoading(false);
+    setProduct(product);
+    if (product) {
+      if (!cart) return;
+      const cartItem = cart?.products?.find((item) => item._id === product._id);
+      if (cartItem) {
+        setQuantity(cartItem.quantity);
       }
-    };
-
-    if (id) {
-      fetchProductDetails();
-    } else {
-      setError("No product ID provided");
-      setTimeout(() => {
-        navigate("/shop");
-      }, 3000);
     }
-  }, [id, navigate]);
 
-  const handleQuantityChange = (e) => {
+    setLoading(false);
+  }, []);
+
+  const handleQuantityChange = async (e) => {
     const value = parseInt(e.target.value, 10);
     if (!isNaN(value) && value >= 1 && value <= (product?.stock || 1)) {
+      await updateCartItem(product._id, value);
       setQuantity(value);
     }
   };
 
-  const handleIncrement = () => {
+  const handleIncrement = async () => {
     if (product && quantity < product.stock) {
-      setQuantity((prev) => Math.min(prev + 1, product.stock));
+      await handleQuantityChange({
+        target: { value: quantity + 1 },
+      });
     }
   };
 
-  const handleDecrement = () => {
+  const handleDecrement = async () => {
     if (quantity > 1) {
-      setQuantity((prev) => Math.max(prev - 1, 1));
+      await handleQuantityChange({
+        target: { value: quantity - 1 },
+      });
     }
   };
 
@@ -92,7 +71,7 @@ const ProductDetail = () => {
 
     try {
       setAddingToCart(true);
-      const result = await addCartItem(product, quantity); // Pass quantity to the addCartItem function
+      const result = await addCartItem(product, product.price);
 
       if (result.success) {
         // Navigate to cart or show a success message
@@ -111,7 +90,7 @@ const ProductDetail = () => {
     return (
       <>
         <Navbar />
-        <div className="loading">Loading...</div>
+        <Loading true />
         <Footer />
       </>
     );
@@ -147,7 +126,7 @@ const ProductDetail = () => {
         </div>
 
         <div className="product-detail-content">
-          <div className="product-image">
+          <div className="product-details-img">
             <img src={product.imgSrc} alt={product.name} />
           </div>
 
@@ -211,8 +190,8 @@ const ProductDetail = () => {
               {addingToCart
                 ? "Adding to Cart..."
                 : product.stock === 0
-                ? "Out of Stock"
-                : "Add to Cart"}
+                  ? "Out of Stock"
+                  : "Add to Cart"}
             </button>
             {error && <p className="error-message">{error}</p>}
           </div>

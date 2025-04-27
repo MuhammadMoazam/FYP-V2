@@ -8,6 +8,8 @@ const { generateToken } = require("../utils/GenerateToken");
 
 const getUserData = async (req, res) => {
   try {
+    console.log(req.user);
+    
     if (req.user) {
       const user = await User.findById(req.user);
       return res.status(200).json(sanitizeUser(user._doc));
@@ -215,8 +217,7 @@ async function verifyOtp(req, res) {
       await Otp.findByIdAndDelete(existingOTP._id);
 
       // getting secure user info
-      const secureInfo = sanitizeUser(user);
-
+      const secureInfo = sanitizeUser(user._doc);
       // generating jwt token
       const token = generateToken({ user: secureInfo._id });
 

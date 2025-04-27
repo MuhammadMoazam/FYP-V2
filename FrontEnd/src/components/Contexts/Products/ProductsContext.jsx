@@ -1,6 +1,4 @@
 import React, { createContext, useState } from 'react';
-import axios from 'axios';
-import Cookies from 'js-cookie';
 import useApi from '../API/useApi';
 
 export const ProductsContext = createContext(undefined);
@@ -16,6 +14,7 @@ const ProductsContextProvider = ({ children }) => {
             const response = await fetchProducts();
 
             setProducts(response);
+            return response;
         } catch (error) {
             console.log(error)
         }

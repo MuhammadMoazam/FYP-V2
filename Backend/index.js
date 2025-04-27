@@ -28,7 +28,7 @@ app.use('/api/get-user-data', async (req, res) => {
     const response = await axios.get(`${process.env.USER_SERVICE_URL}/get-user-data`, { headers: { Authorization: req.headers.authorization } });
     res.status(200).json(response.data);
   } catch (error) {
-    console.error("Error fetching user data:", error);
+    console.error("Error fetching user data:", error.message);
     res.status(500).json({ error: "Failed to fetch user data" });
   }
 });
@@ -38,7 +38,7 @@ app.use('/api/update-user', async (req, res) => {
     const response = await axios.post(`${process.env.USER_SERVICE_URL}/update-user-data`, { ...req.body }, { headers: { Authorization: req.headers.authorization } });
     res.status(200).json(response.data);
   } catch (error) {
-    console.error("Error updating user data:", error);
+    console.error("Error updating user data:", error.message);
     res.status(500).json({ error: "Failed to update user data" });
   }
 });
@@ -48,7 +48,7 @@ app.use('/api/signup', async (req, res) => {
     const response = await axios.post(`${process.env.USER_SERVICE_URL}/signup`, req.body);
     res.status(200).json(response.data);
   } catch (error) {
-    console.error("Error signing up:", error);
+    console.error("Error signing up:", error.message);
     res.status(500).json({ error: "Failed to sign up" });
   }
 });
@@ -58,7 +58,7 @@ app.use("/api/signin", async (req, res) => {
     const response = await axios.post(`${process.env.USER_SERVICE_URL}/signin`, req.body);
     res.status(200).json(response.data);
   } catch (error) {
-    console.error("Error signing in:", error);
+    console.error("Error signing in:", error.message);
     res.status(500).json({ error: "Failed to sign in" });
   }
 });
@@ -68,7 +68,7 @@ app.use("/api/resend-otp", async (req, res) => {
     const response = await axios.post(`${process.env.USER_SERVICE_URL}/resend-otp`, req.body);
     res.status(200).json(response.data);
   } catch (error) {
-    console.error("Error resending OTP:", error);
+    console.error("Error resending OTP:", error.message);
     res.status(500).json({ error: "Failed to resend OTP" });
   }
 });
@@ -78,7 +78,7 @@ app.use("/api/verify-otp", async (req, res) => {
     const response = await axios.post(`${process.env.USER_SERVICE_URL}/verify-otp`, req.body);
     res.status(200).json(response.data);
   } catch (error) {
-    console.error("Error verifying OTP:", error);
+    console.error("Error verifying OTP:", error.message);
     res.status(500).json({ error: "Failed to verify OTP" });
   }
 });
@@ -90,7 +90,7 @@ app.use("/api/get-products", async (req, res) => {
     const response = await axios.get(`${process.env.PRODUCTS_SERVICE_URL}/get-products`);
     res.status(200).json(response.data);
   } catch (error) {
-    console.error("Error getting products:", error);
+    console.error("Error getting products:", error.message);
     res.status(500).json({ error: "Failed to get products" });
   }
 });
@@ -100,7 +100,7 @@ app.use("/api/get-product", async (req, res) => {
     const response = await axios.get(`${process.env.PRODUCTS_SERVICE_URL}/get-product`);
     res.status(200).json(response.data);
   } catch (error) {
-    console.error("Error getting product:", error);
+    console.error("Error getting product:", error.message);
     res.status(500).json({ error: "Failed to get product" });
   }
 });
@@ -112,7 +112,7 @@ app.use("/api/get-cart-items", async (req, res) => {
     const response = await axios.post(`${process.env.CART_SERVICE_URL}/get-items`, req.body, { headers: { Authorization: req.headers.authorization } });
     res.status(200).json(response.data);
   } catch (error) {
-    console.error("Error getting cart items:", error);
+    console.error("Error getting cart items:", error.message);
     res.status(500).json({ error: "Failed to get cart items" });
   }
 });
@@ -122,7 +122,7 @@ app.use("/api/add-cart-item", async (req, res) => {
     const response = await axios.post(`${process.env.CART_SERVICE_URL}/add-item`, req.body, { headers: { Authorization: req.headers.authorization } });
     res.status(200).json(response.data);
   } catch (error) {
-    console.error("Error adding cart item:", error);
+    console.error("Error adding cart item:", error.message);
     res.status(500).json({ error: "Failed to add cart item" });
   }
 });
@@ -132,7 +132,7 @@ app.use("/api/remove-cart-item", async (req, res) => {
     const response = await axios.post(`${process.env.CART_SERVICE_URL}/remove-item`, req.body, { headers: { Authorization: req.headers.authorization } });
     res.status(200).json(response.data);
   } catch (error) {
-    console.error("Error remove cart item:", error);
+    console.error("Error remove cart item:", error.message);
     res.status(500).json({ error: "Failed to remove cart item" });
   }
 });
@@ -142,7 +142,7 @@ app.use("/api/update-cart-item", async (req, res) => {
     const response = await axios.post(`${process.env.CART_SERVICE_URL}/update-item`, req.body, { headers: { Authorization: req.headers.authorization } });
     res.status(200).json(response.data);
   } catch (error) {
-    console.error("Error updating cart item:", error);
+    console.error("Error updating cart item:", error.message);
     res.status(500).json({ error: "Failed to update cart item" });
   }
 });
@@ -152,7 +152,7 @@ app.use("/api/empty-cart", async (req, res) => {
     const response = await axios.post(`${process.env.CART_SERVICE_URL}/empty-cart`, req.body, { headers: { Authorization: req.headers.authorization } });
     res.status(200).json(response.data);
   } catch (error) {
-    console.error("Error emptying cart:", error);
+    console.error("Error emptying cart:", error.message);
     res.status(500).json({ error: "Failed to empty cart" });
   }
 });
@@ -164,7 +164,7 @@ app.use("/api/get-orders", async (req, res) => {
     const response = await axios.post(`${process.env.ORDER_SERVICE_URL}/get-orders`, req.body, { headers: { Authorization: req.headers.authorization } });
     res.status(200).json(response.data);
   } catch (error) {
-    console.error("Error getting orders:", error);
+    console.error("Error getting orders:", error.message);
     res.status(500).json({ error: "Failed to get orders" });
   }
 });
@@ -174,7 +174,7 @@ app.use("/api/get-order", async (req, res) => {
     const response = await axios.post(`${process.env.ORDER_SERVICE_URL}/get-order`, req.body, { headers: { Authorization: req.headers.authorization } });
     res.status(200).json(response.data);
   } catch (error) {
-    console.error("Error getting order:", error);
+    console.error("Error getting order:", error.message);
     res.status(500).json({ error: "Failed to get order" });
   }
 });
@@ -184,7 +184,7 @@ app.use("/api/place-order", async (req, res) => {
     const response = await axios.post(`${process.env.ORDER_SERVICE_URL}/place-order`, req.body, { headers: { Authorization: req.headers.authorization } });
     res.status(200).json(response.data);
   } catch (error) {
-    console.error("Error placing order:", error);
+    console.error("Error placing order:", error.message);
     res.status(500).json({ error: "Failed to place order" });
   }
 });
@@ -194,7 +194,7 @@ app.use("/api/cancel-order", async (req, res) => {
     const response = await axios.post(`${process.env.ORDER_SERVICE_URL}/cancel-order`, req.body, { headers: { Authorization: req.headers.authorization } });
     res.status(200).json(response.data);
   } catch (error) {
-    console.error("Error canceling order:", error);
+    console.error("Error canceling order:", error.message);
     res.status(500).json({ error: "Failed to cancel order" });
   }
 });
@@ -204,7 +204,7 @@ app.use("/api/update-order-shipping-status", async (req, res) => {
     const response = await axios.post(`${process.env.ORDER_SERVICE_URL}/update-order-shipping-status`, req.body, { headers: { Authorization: req.headers.authorization } });
     res.status(200).json(response.data);
   } catch (error) {
-    console.error("Error updating order shipping status:", error);
+    console.error("Error updating order shipping status:", error.message);
     res.status(500).json({ error: "Failed to update order shipping status" });
   }
 });
@@ -216,7 +216,7 @@ app.use("/api/create-payment-intent", async (req, res) => {
     const response = await axios.post(`${process.env.PAYMENT_SERVICE_URL}/create-payment-intent`, req.body, { headers: { Authorization: req.headers.authorization } });
     res.status(200).json(response.data);
   } catch (error) {
-    console.error("Error creating payment intent:", error);
+    console.error("Error creating payment intent:", error.message);
     res.status(500).json({ error: "Failed to create payment intent" });
   }
 });
@@ -226,7 +226,7 @@ app.use("/api/get-payment-intent", async (req, res) => {
     const response = await axios.post(`${process.env.PAYMENT_SERVICE_URL}/get-payment-intent`, req.body, { headers: { Authorization: req.headers.authorization } });
     res.status(200).json(response.data);
   } catch (error) {
-    console.error("Error getting payment intent:", error);
+    console.error("Error getting payment intent:", error.message);
     res.status(500).json({ error: "Failed to get payment intent" });
   }
 });
@@ -236,11 +236,10 @@ app.use("/api/handle-stripe-webhook", async (req, res) => {
     const response = await axios.post(`${process.env.PAYMENT_SERVICE_URL}/handle-stripe-webhook`, req.body);
     res.status(200).json(response.data);
   } catch (error) {
-    console.error("Error handling Stripe webhook:", error);
+    console.error("Error handling Stripe webhook:", error.message);
     res.status(500).json({ error: "Failed to handle Stripe webhook" });
   }
 });
-
 
 // Start Server
 const PORT = 5000;

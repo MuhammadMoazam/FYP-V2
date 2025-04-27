@@ -15,13 +15,16 @@ function Checkout() {
 
     const { user } = useUser()
     const { placeOrder } = useApi()
-    
+
     const orderItems = useMemo(() => location?.state?.orderItems ?? [], [location]);
+
+    console.log(user);
+    
 
     const [loading, setLoading] = useState(false)
     const [paymentMethod, setPaymentMethod] = useState('bank')
     const [nameInputs, setNameInputs] = useState({ firstName: user?.name.firstName || '', lastName: user?.name.lastName || '' })
-    const [otherDetails, setOtherDetails] = useState({ country: user.addresses?.filter(address => address.default)[0].country || '', state: user.addresses?.filter(address => address.default)[0].state || '', city: user.addresses?.filter(address => address.default)[0].city || '', street: user.addresses?.filter(address => address.default)[0].street || '', postcode: user.addresses?.filter(address => address.default)[0].postcode || '', phone: user.phone || '', email: user?.email || '' })
+    const [otherDetails, setOtherDetails] = useState({ country: user.addresses?.filter(address => address.default)[0]?.country || '', state: user.addresses?.filter(address => address.default)[0]?.state || '', city: user.addresses?.filter(address => address.default)[0]?.city || '', street: user.addresses?.filter(address => address.default)[0]?.street || '', postcode: user.addresses?.filter(address => address.default)[0]?.postcode || '', phone: user.phone || '', email: user?.email || '' })
 
     const handleSubmit = async (e) => {
         e.preventDefault()

@@ -54,9 +54,7 @@ exports.updateCartItem = async (req, res) => {
       }
       return product;
     });
-
     cart.total = cart.products.reduce((total, product) => total + product.total, 0).toFixed(0);
-    console.log(cart.total);
 
     await cart.save();
 

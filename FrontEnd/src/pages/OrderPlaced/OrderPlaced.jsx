@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import Navbar from "../../components/Navbar/Navbar";
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation, replace } from 'react-router-dom';
@@ -17,14 +16,19 @@ function OrderPlaced() {
     const { cancelOrder, getPaymentIntent } = useApi()
 
     const [paymentIntentId, setPaymentIntentId] = useState("");
-    const [paymentStatus, setPaymentStatus] = useState("Processing...");
+    const [paymentStatus, setPaymentStatus] = useState("processing");
     const order = location?.state?.order ?? null;
 
     useEffect(() => {
         // get id from url 
         const urlParams = new URLSearchParams(window.location.search);
         const paymentIntentId = urlParams.get('payment_intent');
-        if (!paymentIntentId) return;
+        if (!paymentIntentId) {
+            if (order.payment.method === "cod") {
+                setPaymentStatus("cod");
+            }
+            return;
+        };
 
         let status;
         // Fetch the payment status from Stripe
@@ -58,7 +62,7 @@ function OrderPlaced() {
                 <div className="payment-status">
 
                     <h1>
-                        {paymentStatus === "processing" ? "Processing..." : paymentStatus === "succeeded" ? "Success" : "Failed"}
+                        {paymentStatus === "processing" ? "Processing..." : paymentStatus === "cod" ? "Your order has been placed successfully. We will contact you soon." : paymentStatus === "succeeded" ? "Success" : "Failed"}
                     </h1>
 
                 </div>

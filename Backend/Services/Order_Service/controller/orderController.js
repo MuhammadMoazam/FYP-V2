@@ -1,7 +1,8 @@
 const bcrypt = require("bcryptjs");
 const Order = require("../models/orderModel");
 const { generateTrackingNumber } = require("../utils/generateTrackingNumber");
-const { default: axios } = require("axios");
+const axios = require("axios");
+require("dotenv").config();
 
 async function placeOrder(req, res) {
   try {
@@ -27,9 +28,12 @@ async function placeOrder(req, res) {
     await order.save();
 
     // get user data to compare
-    const user = await axios.get(`http://localhost:5001/get-user-data`, { headers: { Authorization: req.headers.authorization } }).then(res => res.data);
+    const user = await axios.get(`${process.env.USER_SERVICE_URL}/get-user-data`, { headers: { Authorization: req.headers.authorization } }).then(res => res.data);
     // Update the user's addresses
-    await axios.post(`http://localhost:5001/update-user-data`, { name: { firstName: user?.name?.firstName ?? firstName, lastName: user?.name?.lastName ?? lastName }, phone: user?.phone ?? phone, addresses: [...user?.addresses ?? [], { country, state, city, street, postcode, default: user?.adresses?.length === 0 }] }, { headers: { Authorization: req.headers.authorization } });
+    await axios.post(`${process.env.USER_SERVICE_URL}/update-user-data`, { name: { firstName: user?.name?.firstName ?? firstName, lastName: user?.name?.lastName ?? lastName }, phone: user?.phone ?? phone, addresses: [...user?.addresses ?? [], { country, state, city, street, postcode, default: user?.adresses?.length === 0 }] }, { headers: { Authorization: req.headers.authorization } });
+
+    //empty cart
+    await axios.post(`${process.env.CART_SERVICE_URL}/empty`, {}, { headers: { Authorization: req.headers.authorization } });
 
     res.status(200).json({ message: "success", order });
   } catch (error) {

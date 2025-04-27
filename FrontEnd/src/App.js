@@ -1,7 +1,4 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
-import { Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
 import ApiProvider from "./components/Contexts/API/APIContext";
 import CartProvider from "./components/Contexts/Cart/CartContext";
 import ProductsProvider from "./components/Contexts/Products/ProductsContext";
@@ -49,7 +46,7 @@ const AppRoutes = () => {
     checkAuth();
     getProducts();
     getCartItems();
-  }, [checkForAuthentication, getCartItems, getProducts]);
+  }, []);
 
   return (
     <Routes>
@@ -59,6 +56,7 @@ const AppRoutes = () => {
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/shop" element={<Shop />} />
+      <Route path="/product" element={<ProductDetail />} />
       <Route path="/blog" element={<Blog />} />
       <Route path="/terms" element={<Term />} />
       <Route path="/legal" element={<Legal />} />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
@@ -47,20 +47,22 @@ const Shop = () => {
   };
 
   const handleProductClick = (productId) => {
-    console.log("Clicking product with ID:", productId);
     if (!productId) {
       console.error("No product ID provided");
       return;
     }
-    navigate(`/product/${productId}`);
+    navigate(`/product/?id=${productId}`);
   };
 
   async function initialize() {
     setLoading(true);
     try {
       if (!allProducts || allProducts.length === 0) {
-        await getProducts();
+        var response = await getProducts();
+        setProducts(response);
+        return;
       }
+
       setProducts(allProducts);
     } catch (error) {
       console.log("🚀 ------------------------------🚀");
@@ -85,6 +87,16 @@ const Shop = () => {
 
   async function changeQuantity(item, quantity) {
     setLoading(item);
+    if (quantity < 1) {
+      setLoading("");
+      return;
+    }
+    if (quantity > products.find((p) => p._id === item).stock) {
+      setError("Product is out of stock");
+      alert("Product is out of stock");
+      setLoading("");
+      return;
+    }
     await updateCartItem(item, quantity);
     setLoading("");
   }
@@ -98,6 +110,16 @@ const Shop = () => {
   useEffect(() => {
     initialize();
   }, []);
+
+  if (loading) {
+    return (
+      <>
+        <Navbar >
+          <Loading loading={loading} />
+        </Navbar>
+      </>
+    )
+  }
 
   return (
     <>
@@ -132,7 +154,7 @@ const Shop = () => {
               <div
                 key={product._id}
                 className="product-card"
-                //onClick={() => handleProductClick(product._id)} *commented out because it interferes with the cart button....
+                onClick={() => handleProductClick(product._id)}
                 role="button"
                 tabIndex={0}
               >
@@ -154,7 +176,10 @@ const Shop = () => {
                   <button
                     disabled={loading === product._id}
                     tabIndex={10}
-                    onClick={() => handleAddToCart(product._id, product.price)}
+                    onClick={(e) => {
+                      e.stopPropagation(); // stop the click from bubbling to the div
+                      handleAddToCart(product._id, product.price);
+                    }}
                     className="cart-button"
                   >
                     {loading === product._id ? (

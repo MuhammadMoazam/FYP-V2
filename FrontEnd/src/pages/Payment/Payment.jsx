@@ -5,7 +5,7 @@ import useApi from "components/Contexts/API/useApi";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./Payment.css"
 
-const stripePromise = loadStripe('[STRIPE_PUBLIC_KEY]');
+const stripePromise = loadStripe('pk_test_51R262CGhoVsSWnBiX8fCBe7jWzRrQc1Dy4RQvpIOodSBQRI9wWlRLD6Qvub8Br7rUHQEARw7taPxniOnMchppptE00bom3topN');
 
 function Payment({ stripe, elements }) {
     const handleSubmit = async (event) => {
