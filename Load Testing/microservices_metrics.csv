@@ -1,0 +1,1 @@
+service,http_req_duration (ms),response_time (ms),vus (users),success_rate (%),http_reqs (req/sec),cpu_usage (%),memory_usage (%),latency (ms),throughput (req/sec),status_code

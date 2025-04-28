@@ -10,5 +10,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "fahad",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "order_service": "file:"
+  }
 }
