@@ -1,5 +1,5 @@
 import Navbar from "../../components/Navbar/Navbar";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import "./Cart.css";
 import emptyCartImage from '../../Assets/Images/empty-cart.png';
@@ -8,50 +8,56 @@ import useProducts from "../../components/Contexts/Products/useProducts";
 import useCart from "../../components/Contexts/Cart/useCart";
 import Loading from "../../components/Loading/Loading";
 
-function Cart() {
+function Cart()
+{
 
     const navigate = useNavigate()
 
     const { products } = useProducts()
-    const { getCartItems, cart, removeCartItem, updateCartItem } = useCart()
+    const { getCartItems, cartItems, removeCartItem, updateCartItem } = useCart()
 
     const [localCartItems, setLocalCartItems] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const setupCart = useCallback(async () => {
-        if (!cart) return;
-        const _cart_products = cart?.products?.map(cartItem => {
+    function setupCart()
+    {
+        const updatedCartItems = cartItems.map(cartItem =>
+        {
             const product = products.find(product => product._id === cartItem.product);
-            return product && { ...product, quantity: cartItem.quantity, _id: cartItem._id, total: cartItem.total };
+            return product && { ...product, quantity: cartItem.quantity, _id: cartItem._id };
         }).filter(item => item);
-
-        setLocalCartItems(_cart_products ?? []);
+        setLocalCartItems(updatedCartItems ?? []);
         setLoading(false);
-    }, [cart, products]);
+    }
 
-    async function removeProduct(item) {
+    async function removeProduct(item)
+    {
         setLoading(true);
         await removeCartItem(item);
         setLoading(false);
     }
 
-    async function changeQuantity(item, quantity) {
+    async function changeQuantity(item, quantity)
+    {
         setLoading(true);
         await updateCartItem(item, quantity);
         setLoading(false);
     }
 
-    async function checkout() {
+    async function checkout()
+    {
         navigate('/checkout', { state: { orderItems: localCartItems } });
     }
 
-    useEffect(() => {
+    useEffect(() =>
+    {
         setupCart();
-    }, [cart, products, setupCart]);
+    }, [cartItems, products]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    useEffect(() => {
+    useEffect(() =>
+    {
         getCartItems();
-    }, []);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <div>
@@ -92,18 +98,18 @@ function Cart() {
                                         <tbody>
                                             {localCartItems.map((item) => (
                                                 <tr key={item._id} className="table-row cart-item-container">
-                                                    <td className="table-cell" style={{ display: 'flex', alignItems: 'center', gap: '100px' }}>
+                                                    <td className="table-cell" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
                                                         <button className="remove-button" onClick={() => removeProduct(item._id)}>✖</button>
-                                                        <img src={item.imgSrc} alt={item.name} className="product-image" />
-                                                        {item.name}
+                                                        <img src={item.imgSrc} alt={item.name} className="product-image" style={{ width: '70px', height: '70px', objectFit: 'cover', borderRadius: '8px', border: '1px solid #eee' }} />
+                                                        <span style={{ fontWeight: 'bold', fontSize: '1rem' }}>{item.name}</span>
                                                     </td>
-                                                    <td className="table-cell">{item.price}</td>
+                                                    <td className="table-cell">{item.discountedPrice ? item.discountedPrice : item.price}</td>
                                                     <td className="table-cell" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100px' }}>
                                                         <button className="quantity-button" disabled={item.quantity === 1} onClick={() => changeQuantity(item._id, item.quantity - 1)}>-</button>
                                                         {item.quantity}
                                                         <button className="quantity-button" onClick={() => changeQuantity(item._id, item.quantity + 1)}>+</button>
                                                     </td>
-                                                    <td className="table-cell">{item.total}</td>
+                                                    <td className="table-cell">{(item.discountedPrice ? item.discountedPrice : item.price) * item.quantity}</td>
                                                 </tr>
                                             ))}
                                         </tbody>
@@ -120,13 +126,13 @@ function Cart() {
                                         <span>Cart Total</span>
 
                                         <span>
-                                            {
-                                                cart.total
-                                            }
+                                            {localCartItems.reduce((total, item) => total + ((item.discountedPrice ? item.discountedPrice : item.price) * item.quantity), 0)}
                                         </span>
                                     </div>
 
-                                    <button className="submit-button" onClick={checkout}>Proceed to Checkout</button>
+                                    <button className="submit-button" onClick={checkout} style={{ width: '100%', maxWidth: '350px', margin: '24px auto 0', display: 'block', padding: '16px 0', fontSize: '1.2rem', borderRadius: '30px', background: '#222', color: '#fff', fontWeight: 'bold', letterSpacing: '1px', boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }}>
+                                        Proceed to Checkout
+                                    </button>
                                 </div>
                         }
 

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import Banner from "../../components/Lower_Banner/Lower_Banner";
@@ -9,14 +8,12 @@ import "./Shop.css";
 import { BounceLoader } from "react-spinners";
 import useProducts from "components/Contexts/Products/useProducts";
 import useCart from "components/Contexts/Cart/useCart";
-import Loading from "components/Loading/Loading";
 
-const Shop = () => {
-  const navigate = useNavigate();
-
+const Shop = () =>
+{
   const { products: allProducts, getProducts } = useProducts();
   const {
-    cart,
+    cartItems,
     addCartItem,
     removeCartItem: removeCartItemApi,
     updateCartItem,
@@ -25,12 +22,17 @@ const Shop = () => {
   const [sortOption, setSortOption] = useState("default");
   const [products, setProducts] = useState(allProducts);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [priceRange, setPriceRange] = useState([0, 10000]);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const handleSortChange = (e) => {
+  const handleSortChange = (e) =>
+  {
     setSortOption(e.target.value);
-    const sortedProducts = [...products].sort((a, b) => {
-      switch (e.target.value) {
+    const sortedProducts = [...products].sort((a, b) =>
+    {
+      switch (e.target.value)
+      {
         case "price-low":
           return a.price - b.price;
         case "price-high":
@@ -46,80 +48,94 @@ const Shop = () => {
     setProducts(sortedProducts);
   };
 
-  const handleProductClick = (productId) => {
-    if (!productId) {
-      console.error("No product ID provided");
-      return;
-    }
-    navigate(`/product/?id=${productId}`);
-  };
-
-  async function initialize() {
-    setLoading(true);
-    try {
-      if (!allProducts || allProducts.length === 0) {
-        var response = await getProducts();
-        setProducts(response);
-        return;
-      }
-
-      setProducts(allProducts);
-    } catch (error) {
-      console.log("🚀 ------------------------------🚀");
-      console.log("🚀 ~ initialize ~ error:", error);
-      console.log("🚀 ------------------------------🚀");
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  const handleAddToCart = async (product, price) => {
+  const handleAddToCart = async (product) =>
+  {
     setLoading(product);
-    const itemExists = cart?.products?.some((item) => item.product === product);
-    if (itemExists) {
+    const itemExists = cartItems.some((item) => item.product === product);
+    if (itemExists)
+    {
       setLoading("");
       return;
     }
-    await addCartItem(product, price);
+    await addCartItem(product);
     setLoading("");
   };
 
-  async function changeQuantity(item, quantity) {
+  async function changeQuantity(item, quantity)
+  {
     setLoading(item);
-    if (quantity < 1) {
-      setLoading("");
-      return;
-    }
-    if (quantity > products.find((p) => p._id === item).stock) {
-      setError("Product is out of stock");
-      alert("Product is out of stock");
-      setLoading("");
-      return;
-    }
     await updateCartItem(item, quantity);
     setLoading("");
   }
 
-  async function removeCartItem(item) {
+  async function removeCartItem(item)
+  {
     setLoading(item);
     await removeCartItemApi(item);
     setLoading("");
   }
 
-  useEffect(() => {
-    initialize();
+  useEffect(() =>
+  {
+    getProducts();
+    // eslint-disable-next-line
   }, []);
 
-  if (loading) {
-    return (
-      <>
-        <Navbar >
-          <Loading loading={loading} />
-        </Navbar>
-      </>
-    )
-  }
+  useEffect(() =>
+  {
+    setProducts(allProducts);
+  }, [allProducts]);
+
+  useEffect(() =>
+  {
+    if (!allProducts || allProducts.length === 0) return;
+    // Calculate min/max price from products
+    const prices = allProducts
+      .map((p) => Number(p.discountedPrice || p.price || p.originalPrice))
+      .filter(Boolean);
+    if (prices.length > 0)
+    {
+      setPriceRange([Math.min(...prices), Math.max(...prices)]);
+    }
+  }, [allProducts]);
+
+  const handleCategoryChange = (category) =>
+  {
+    setSelectedCategories((prev) =>
+      prev.includes(category)
+        ? prev.filter((c) => c !== category)
+        : [...prev, category]
+    );
+  };
+  const handlePriceChange = (range) =>
+  {
+    setPriceRange(range);
+  };
+  const handleSearchChange = (term) =>
+  {
+    setSearchTerm(term);
+  };
+
+  useEffect(() =>
+  {
+    let filtered = allProducts;
+    if (selectedCategories.length > 0)
+    {
+      filtered = filtered.filter((p) => selectedCategories.includes(p.category));
+    }
+    filtered = filtered.filter((p) =>
+    {
+      const price = Number(p.discountedPrice || p.price || p.originalPrice);
+      return price >= priceRange[0] && price <= priceRange[1];
+    });
+    if (searchTerm)
+    {
+      filtered = filtered.filter((p) =>
+        p.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+    setProducts(filtered);
+  }, [allProducts, selectedCategories, priceRange, searchTerm]);
 
   return (
     <>
@@ -133,7 +149,19 @@ const Shop = () => {
       </div>
 
       <div className="shop-container">
-        <Sidebar />
+        <Sidebar
+          categories={Array.from(
+            new Set(allProducts.map((p) => p.category)).values()
+          )}
+          selectedCategories={selectedCategories}
+          onCategoryChange={handleCategoryChange}
+          priceRange={priceRange}
+          onPriceChange={handlePriceChange}
+          searchTerm={searchTerm}
+          onSearchChange={handleSearchChange}
+          minPrice={priceRange[0]}
+          maxPrice={priceRange[1]}
+        />
         <div className="shop-content">
           <div className="shop-header">
             <div className="results-count">
@@ -154,7 +182,7 @@ const Shop = () => {
               <div
                 key={product._id}
                 className="product-card"
-                onClick={() => handleProductClick(product._id)}
+                //onClick={() => handleProductClick(product._id)} *commented out because it interferes with the cart button....
                 role="button"
                 tabIndex={0}
               >
@@ -164,7 +192,8 @@ const Shop = () => {
                 <img
                   src={product.imgSrc}
                   alt={product.name}
-                  onError={(e) => {
+                  onError={(e) =>
+                  {
                     //console.error('Error loading image for product:', product._id);
                     e.target.src = "/placeholder-image.jpg"; // Add a placeholder image
                   }}
@@ -176,10 +205,7 @@ const Shop = () => {
                   <button
                     disabled={loading === product._id}
                     tabIndex={10}
-                    onClick={(e) => {
-                      e.stopPropagation(); // stop the click from bubbling to the div
-                      handleAddToCart(product._id, product.price);
-                    }}
+                    onClick={() => handleAddToCart(product._id)}
                     className="cart-button"
                   >
                     {loading === product._id ? (
@@ -190,12 +216,13 @@ const Shop = () => {
                         aria-label="Loading Spinner"
                         data-testid="loader"
                       />
-                    ) : cart?.products?.some(
-                      (item) => item.product === product._id
+                    ) : cartItems.some(
+                      (cartItem) => cartItem.product === product._id
                     ) ? (
-                      (() => {
-                        const item = cart?.products?.find(
-                          (item) => item.product === product._id
+                      (() =>
+                      {
+                        const foundItem = cartItems.find(
+                          (cartItem) => cartItem.product === product._id
                         );
                         return (
                           <div
@@ -210,28 +237,31 @@ const Shop = () => {
                               className="quantity-change-button"
                               style={{
                                 color:
-                                  item.quantity === 1 ? "#d9534f" : "white",
+                                  foundItem.quantity === 1 ? "#d9534f" : "white",
                                 border:
-                                  item.quantity === 1
+                                  foundItem.quantity === 1
                                     ? "1px solid #d9534f"
                                     : "1px solid white",
                               }}
-                              onClick={() => {
-                                if (item.quantity === 1) {
-                                  removeCartItem(item._id);
-                                } else {
-                                  changeQuantity(item._id, item.quantity - 1);
+                              onClick={() =>
+                              {
+                                if (foundItem.quantity === 1)
+                                {
+                                  removeCartItem(foundItem._id);
+                                } else
+                                {
+                                  changeQuantity(foundItem._id, foundItem.quantity - 1);
                                 }
                               }}
                             >
                               {" "}
-                              {item.quantity === 1 ? "✖" : "-"}
+                              {foundItem.quantity === 1 ? "✖" : "-"}
                             </button>
-                            {item.quantity}
+                            {foundItem.quantity}
                             <button
                               className="quantity-change-button"
                               onClick={() =>
-                                changeQuantity(item._id, item.quantity + 1)
+                                changeQuantity(foundItem._id, foundItem.quantity + 1)
                               }
                             >
                               +
@@ -245,15 +275,15 @@ const Shop = () => {
                   </button>
 
                   <p>
-                    {product.price && (
+                    {product.originalPrice && (
                       <span className="old-price">
                         <span className="price-label">Original Price: </span>$
-                        {product.price}
+                        {product.originalPrice}
                       </span>
                     )}
                     <span className="new-price">
                       <span className="price-label">Discounted Price: </span>$
-                      {(Number.parseInt(product.price) * (1 - Number.parseInt(product.discount) / 100))}
+                      {product.discountedPrice || product.price}
                     </span>
                   </p>
                 </div>

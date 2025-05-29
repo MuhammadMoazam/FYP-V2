@@ -1,24 +1,29 @@
-import React, { createContext } from 'react';
+import React, { createContext, useContext } from 'react';
 import axios from 'axios';
 import useUser from '../User/useUser';
 import Cookies from 'js-cookie'
 
-const serverURL = 'http://localhost:5000'
+const serverURL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
 export const ApiContext = createContext(undefined);
 
-const ApiContextProvider = ({ children }) => {
+const ApiContextProvider = ({ children }) =>
+{
 
-    const { login, authToken, setAuthToken } = useUser()
+    const { login, updateCart, cartItems, addCartItem: addToCart } = useUser()
 
-    const forgotPassword = async (email) => {
-        try {
+    const forgotPassword = async (email) =>
+    {
+        try
+        {
             const response = await axios.post(`${serverURL}/api/forgot-password`, { email })
-            if (response.status === 200) {
+            if (response.status === 200)
+            {
                 return true
             }
             return false
-        } catch (error) {
+        } catch (error)
+        {
             console.log("🚀 ----------------------------------🚀")
             console.log("🚀 ~ forgotPassword ~ error:", error)
             console.log("🚀 ----------------------------------🚀")
@@ -26,16 +31,20 @@ const ApiContextProvider = ({ children }) => {
         }
     }
 
-    const registerUser = async (email, password) => {
-        try {
+    const registerUser = async (email, password) =>
+    {
+        try
+        {
             const response = await axios.post(`${serverURL}/api/signup`, {
                 email,
                 password,
             })
 
             return response.data
-        } catch (error) {
-            if (error.response.status === 409) {
+        } catch (error)
+        {
+            if (error.response.status === 409)
+            {
                 return { message: 'conflict' }
             }
             console.log("🚀 --------------------------------🚀")
@@ -45,13 +54,17 @@ const ApiContextProvider = ({ children }) => {
         }
     }
 
-    const authenticateUser = async (userName, password) => {
-        try {
+    const authenticateUser = async (userName, password) =>
+    {
+        try
+        {
             const apiResponse = await axios.post(`${serverURL}/api/signin`, { userName, password });
 
             return apiResponse.data
-        } catch (error) {
-            if (error.response.status === 401) {
+        } catch (error)
+        {
+            if (error.response.status === 401)
+            {
                 return { message: 'unauthorized' }
             }
             console.log("🚀 ------------------------------------🚀")
@@ -61,19 +74,20 @@ const ApiContextProvider = ({ children }) => {
         }
     };
 
-    const checkForAuthentication = async () => {
-        try {
+    const checkForAuthentication = async () =>
+    {
+        try
+        {
             const token = Cookies.get('session')
-            if (token) {
+            if (token)
+            {
                 const apiResponse = await axios.get(`${serverURL}/api/get-user-data`, { headers: { Authorization: token } })
-                if (apiResponse.status === 200) {
-                    setAuthToken(token)
-                    login({ user: apiResponse.data, token })
-                }
-                return { message: 'authenticated' }
+                login({ user: apiResponse.data, token })
             };
-        } catch (error) {
-            if (error.response.status === 401) {
+        } catch (error)
+        {
+            if (error.response.status === 401)
+            {
                 return { message: 'unauthorized' }
             }
             console.log("🚀 ------------------------------------------🚀")
@@ -83,14 +97,18 @@ const ApiContextProvider = ({ children }) => {
         }
     };
 
-    const resendOTP = async (email) => {
-        try {
+    const resendOTP = async (email) =>
+    {
+        try
+        {
             const response = await axios.post(`${serverURL}/api/resend-otp`, { email })
-            if (response.status === 200) {
+            if (response.status === 200)
+            {
                 return true
             }
             return false
-        } catch (error) {
+        } catch (error)
+        {
             console.log("🚀 ------------------------------🚀")
             console.log("🚀 ~ resendOTP ~ error:", error)
             console.log("🚀 ------------------------------🚀")
@@ -98,14 +116,18 @@ const ApiContextProvider = ({ children }) => {
         }
     }
 
-    const verifyOTP = async (email, otp) => {
-        try {
+    const verifyOTP = async (email, otp) =>
+    {
+        try
+        {
             const response = await axios.post(`${serverURL}/api/verify-otp`, { email, otp })
-            if (response.status === 200) {
+            if (response.status === 200)
+            {
                 return response.data
             }
             return false
-        } catch (error) {
+        } catch (error)
+        {
             console.log("🚀 ------------------------------🚀")
             console.log("🚀 ~ verifyOTP ~ error:", error)
             console.log("🚀 ------------------------------🚀")
@@ -113,19 +135,22 @@ const ApiContextProvider = ({ children }) => {
         }
     }
 
-    const updateUser = async ({ userName, name, passwords, email }) => {
-        try {
-            if (!authToken) {
-                return { message: 'unauthorized' }
-            }
-            const response = await axios.post(`${serverURL}/api/update-user`, { userName, name, passwords, email }, { headers: { Authorization: authToken } })
+    const updateUser = async ({ userName, names, passwords, email }) =>
+    {
+        try
+        {
+            const token = Cookies.get('session')
+            const response = await axios.post(`${serverURL}/api/update-user`, { userName, names, passwords, email }, { headers: { Authorization: token } })
 
             return response.data
-        } catch (error) {
-            if (error.response.status === 403) {
+        } catch (error)
+        {
+            if (error.response.status === 403)
+            {
                 return { message: error.response.data.message }
             }
-            if (error.response.status === 409) {
+            if (error.response.status === 409)
+            {
                 return { message: error.response.data.message }
             }
             console.log("🚀 ------------------------------🚀")
@@ -135,14 +160,24 @@ const ApiContextProvider = ({ children }) => {
         }
     }
 
-    const fetchProducts = async () => {
-        try {
-            const response = await axios.get(`${serverURL}/api/get-products`);
+    const fetchProducts = async () =>
+    {
+        try
+        {
+            const response = await axios.get(`${serverURL}/api/products`);
 
-            if (response.status === 200 && response.data) {
+            console.log("🚀 ---------------------------------------🚀")
+            console.log("🚀 ~ fetchProducts ~ response:", response)
+            console.log("🚀 ---------------------------------------🚀")
+            if (response.status === 200 && response.data)
+            {
+                console.log("🚀 -------------------------------------------------🚀")
+                console.log("🚀 ~ fetchProducts ~ response.data:", response.data)
+                console.log("🚀 -------------------------------------------------🚀")
                 return response.data;
             }
-        } catch (err) {
+        } catch (err)
+        {
             console.log("🚀 -----------------------------🚀")
             console.log("🚀 ~ fetchProducts ~ err:", err)
             console.log("🚀 -----------------------------🚀")
@@ -150,17 +185,19 @@ const ApiContextProvider = ({ children }) => {
         }
     };
 
-    const fetchCartItems = async () => {
-        try {
-            if (!authToken) {
-                return { message: 'unauthorized' }
-            }
+    const fetchCartItems = async () =>
+    {
+        try
+        {
+            const token = Cookies.get('session')
+            const response = await axios.get(`${serverURL}/api/cart/get-items`, { headers: { Authorization: token } });
 
-            const response = await axios.get(`${serverURL}/api/get-cart-items`, { headers: { Authorization: authToken } });
-            if (response.status === 200 && response.data) {
+            if (response.status === 200 && response.data)
+            {
                 return response.data;
             }
-        } catch (err) {
+        } catch (err)
+        {
             console.log("🚀 ------------------------------🚀")
             console.log("🚀 ~ fetchCartItems ~ err:", err)
             console.log("🚀 ------------------------------🚀")
@@ -168,17 +205,19 @@ const ApiContextProvider = ({ children }) => {
         }
     };
 
-    const addCartItem = async (item) => {
-        try {
-            if (!authToken) {
-                return { message: 'unauthorized' }
-            }
-            const response = await axios.post(`${serverURL}/api/add-cart-item`, { item }, { headers: { Authorization: authToken } });
+    const addCartItem = async (item) =>
+    {
+        try
+        {
+            const token = Cookies.get('session')
+            const response = await axios.post(`${serverURL}/api/cart/add-item`, { item }, { headers: { Authorization: token } });
 
-            if (response.status === 200 && response.data) {
+            if (response.status === 201 && response.data)
+            {
                 return response.data;
             }
-        } catch (err) {
+        } catch (err)
+        {
             console.log("🚀 ---------------------------🚀")
             console.log("🚀 ~ addCartItem ~ err:", err)
             console.log("🚀 ---------------------------🚀")
@@ -186,17 +225,19 @@ const ApiContextProvider = ({ children }) => {
         }
     };
 
-    const removeCartItem = async (item) => {
-        try {
-            if (!authToken) {
-                return { message: 'unauthorized' }
-            }
-            const response = await axios.post(`${serverURL}/api/remove-cart-item`, { item }, { headers: { Authorization: authToken } });
+    const removeCartItem = async (item) =>
+    {
+        try
+        {
+            const token = Cookies.get('session')
+            const response = await axios.post(`${serverURL}/api/cart/remove-item`, { item }, { headers: { Authorization: token } });
 
-            if (response.status === 200 && response.data) {
-                return response.data;
+            if (response.status === 200 && response.data)
+            {
+                return true;
             }
-        } catch (err) {
+        } catch (err)
+        {
             console.log("🚀 ------------------------------🚀")
             console.log("🚀 ~ removeCartItem ~ err:", err)
             console.log("🚀 ------------------------------🚀")
@@ -204,17 +245,19 @@ const ApiContextProvider = ({ children }) => {
         }
     };
 
-    const updateCartItem = async (item, quantity) => {
-        try {
-            if (!authToken) {
-                return { message: 'unauthorized' }
-            }
-            const response = await axios.post(`${serverURL}/api/update-cart-item`, { item, quantity }, { headers: { Authorization: authToken } });
+    const updateCartItem = async (item, quantity) =>
+    {
+        try
+        {
+            const token = Cookies.get('session')
+            const response = await axios.post(`${serverURL}/api/cart/update-item`, { item, quantity }, { headers: { Authorization: token } });
 
-            if (response.status === 200 && response.data) {
+            if (response.status === 200 && response.data)
+            {
                 return response.data;
             }
-        } catch (err) {
+        } catch (err)
+        {
             console.log("🚀 ------------------------------🚀")
             console.log("🚀 ~ updateCartItem ~ err:", err)
             console.log("🚀 ------------------------------🚀")
@@ -222,114 +265,25 @@ const ApiContextProvider = ({ children }) => {
         }
     };
 
-    const emptyCart = async () => {
-        try {
-            if (!authToken) {
-                return { message: 'unauthorized' }
-            }
-            const response = await axios.get(`${serverURL}/api/empty-cart`, { headers: { Authorization: authToken } });
+    const emptyCart = async () =>
+    {
+        try
+        {
+            const token = Cookies.get('session')
+            const response = await axios.get(`${serverURL}/api/cart/empty`, { headers: { Authorization: token } });
 
-            if (response.status === 200 && response.data) {
+            if (response.status === 200 && response.data)
+            {
                 return true;
             }
-        } catch (err) {
+        } catch (err)
+        {
             console.log("🚀 -------------------------🚀")
             console.log("🚀 ~ emptyCart ~ err:", err)
             console.log("🚀 -------------------------🚀")
             return null;
         }
     };
-
-    const placeOrder = async (order_details) => {
-        try {
-            if (!authToken) {
-                return { message: 'unauthorized' }
-            }
-            const response = await axios.post(`${serverURL}/api/place-order`, { order_details }, { headers: { Authorization: authToken } });
-
-            if (response.status === 200 && response.data) {
-                return response.data;
-            }
-        } catch (err) {
-            console.log("🚀 --------------------------🚀")
-            console.log("🚀 ~ placeOrder ~ err:", err)
-            console.log("🚀 --------------------------🚀")
-            return null;
-        }
-    };
-
-    const cancelOrder = async (order) => {
-        try {
-            if (!authToken) {
-                return { message: 'unauthorized' }
-            }
-            const response = await axios.post(`${serverURL}/api/cancel-order`, { order }, { headers: { Authorization: authToken } });
-
-            if (response.status === 200 && response.data) {
-                return response.data;
-            }
-        } catch (err) {
-            console.log("🚀 ---------------------------🚀")
-            console.log("🚀 ~ cancelOrder ~ err:", err)
-            console.log("🚀 ---------------------------🚀")
-            return null;
-        }
-    };
-
-
-    const initiatePaymentIntent = async (order) => {
-        try {
-            if (!authToken) {
-                return { message: 'unauthorized' }
-            }
-            const response = await axios.post(`${serverURL}/api/create-payment-intent`, { order }, { headers: { Authorization: authToken } });
-
-            if (response.status === 200 && response.data) {
-                return response.data;
-            }
-        } catch (err) {
-            console.log("🚀 ------------------------------🚀")
-            console.log("🚀 ~ initiatePaymentIntent ~ err:", err)
-            console.log("🚀 ------------------------------🚀")
-            return null;
-        }
-    };
-
-    const getPaymentIntent = async (id) => {
-        try {
-            if (!authToken) {
-                return { message: 'unauthorized' }
-            }
-            const response = await axios.post(`${serverURL}/api/get-payment-intent`, { id }, { headers: { Authorization: authToken } });
-
-            if (response.status === 200 && response.data) {
-                return response.data;
-            }
-        } catch (err) {
-            console.log("🚀 --------------------------------🚀")
-            console.log("🚀 ~ getPaymentIntent ~ err:", err)
-            console.log("🚀 --------------------------------🚀")
-            return null;
-        }
-    };
-
-    const confirmPaymentIntent = async (paymentIntentId) => {
-        try {
-            if (!authToken) {
-                return { message: 'unauthorized' }
-            }
-            const response = await axios.post(`${serverURL}/api/confirm-payment-intent`, { paymentIntentId }, { headers: { Authorization: authToken } });
-
-            if (response.status === 200 && response.data) {
-                return response.data;
-            }
-        } catch (err) {
-            console.log("🚀 ------------------------------🚀")
-            console.log("🚀 ~ confirmPaymentIntent ~ err:", err)
-            console.log("🚀 ------------------------------🚀")
-            return null;
-        }
-    }
 
     const contextValue = {
         forgotPassword,
@@ -344,12 +298,7 @@ const ApiContextProvider = ({ children }) => {
         addCartItem,
         removeCartItem,
         updateCartItem,
-        emptyCart,
-        placeOrder,
-        cancelOrder,
-        initiatePaymentIntent,
-        getPaymentIntent,
-        confirmPaymentIntent
+        emptyCart
     };
 
     return (

@@ -2,7 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body {
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
   overflow-x: hidden;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -15,4 +20,63 @@ html, body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* Animations and Effects */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@keyframes scaleUp {
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.04);
+  }
+}
+
+.scale-up-hover:hover {
+  transform: scale(1.04);
+  box-shadow: 0 8px 24px rgba(59, 79, 228, 0.12);
+  transition: transform 0.2s, box-shadow 0.2s;
+  z-index: 2;
+}
+
+@keyframes rowHighlight {
+  from {
+    background: transparent;
+  }
+
+  to {
+    background: #f0f6ff;
+  }
+}
+
+.table-row-hover:hover {
+  background: #f0f6ff;
+  transition: background 0.2s;
+}
+
+.button-animate {
+  transition: transform 0.15s, box-shadow 0.15s, background 0.2s;
+}
+
+.button-animate:hover {
+  transform: scale(1.06) translateY(-2px);
+  box-shadow: 0 4px 16px rgba(59, 79, 228, 0.18);
+  background: linear-gradient(90deg, #4f8cff 60%, #3b4fe4 100%);
 }

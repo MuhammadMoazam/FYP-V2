@@ -1,0 +1,134 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=your-secure-password
+    networks:
+      - microservices-network
+
+  product-service:
+    build:
+      context: ./Backend/Services/product-service
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001"
+    environment:
+      - MONGO_URI=mongodb://admin:your-secure-password@mongodb:27017/productDB?authSource=admin
+      - PORT=5001
+      - NODE_ENV=production
+      - NODE_OPTIONS=--max-http-header-size=80000
+    depends_on:
+      - mongodb
+    networks:
+      - microservices-network
+    restart: always
+    healthcheck:
+      test: [ "CMD", "wget", "-qO-", "http://localhost:5001/api/products/health" ]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+
+  cart-service:
+    build:
+      context: ./Backend/Services/cart-service
+      dockerfile: Dockerfile
+    ports:
+      - "5002:5002"
+    environment:
+      - MONGO_URI=mongodb://admin:your-secure-password@mongodb:27017/cartDB?authSource=admin
+      - PORT=5002
+      - NODE_ENV=production
+    depends_on:
+      - mongodb
+    networks:
+      - microservices-network
+    restart: always
+    healthcheck:
+      test: [ "CMD", "wget", "-qO-", "http://localhost:5002/api/cart/health" ]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+
+  user-service:
+    build:
+      context: ./Backend/Services/user-service
+      dockerfile: Dockerfile
+    ports:
+      - "5003:5003"
+    environment:
+      - MONGO_URI=mongodb://admin:your-secure-password@mongodb:27017/userDB?authSource=admin
+      - PORT=5003
+      - NODE_ENV=production
+      - JWT_SECRET=your-production-secret-key
+    depends_on:
+      - mongodb
+    networks:
+      - microservices-network
+    restart: always
+    healthcheck:
+      test: [ "CMD", "wget", "-qO-", "http://localhost:5003/api/auth/health" ]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+
+  order-service:
+    build:
+      context: ./Backend/Services/order-service
+      dockerfile: Dockerfile
+    ports:
+      - "5004:5004"
+    environment:
+      - MONGO_URI=mongodb://admin:your-secure-password@mongodb:27017/orderDB?authSource=admin
+      - PORT=5004
+      - NODE_ENV=production
+    depends_on:
+      - mongodb
+    networks:
+      - microservices-network
+    restart: always
+    healthcheck:
+      test: [ "CMD", "wget", "-qO-", "http://localhost:5004/api/orders/health" ]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+
+  frontend:
+    build:
+      context: ./FrontEnd
+      dockerfile: Dockerfile
+      args:
+        - REACT_APP_API_URL=https://YOUR_AZURE_VM_DOMAIN
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./ssl:/etc/nginx/ssl
+    depends_on:
+      - product-service
+      - cart-service
+      - user-service
+      - order-service
+    networks:
+      - microservices-network
+    restart: always
+    healthcheck:
+      test: [ "CMD", "wget", "-qO-", "http://localhost:80/health" ]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+
+networks:
+  microservices-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+  ssl:

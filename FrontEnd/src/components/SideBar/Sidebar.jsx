@@ -1,12 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Sidebar.css";
 
-const Sidebar = () => {
-  const [priceRange, setPriceRange] = useState(2500);
+const Sidebar = ({
+  categories = [],
+  selectedCategories = [],
+  onCategoryChange = () => { },
+  priceRange = [0, 10000],
+  onPriceChange = () => { },
+  searchTerm = "",
+  onSearchChange = () => { },
+  minPrice = 0,
+  maxPrice = 10000,
+}) =>
+{
+  const [localPrice, setLocalPrice] = useState(priceRange[1]);
 
-  const handlePriceChange = (event) => {
-    setPriceRange(event.target.value);
-  };
+  useEffect(() =>
+  {
+    setLocalPrice(priceRange[1]);
+  }, [priceRange]);
 
   return (
     <div className="sidebar-container">
@@ -16,40 +28,25 @@ const Sidebar = () => {
           type="text"
           placeholder="Search product..."
           className="search-input"
+          value={searchTerm}
+          onChange={(e) => onSearchChange(e.target.value)}
         />
       </div>
 
       <div className="category-section">
         <h3>Categories</h3>
         <ul>
-          <li>
-            <input type="checkbox" id="uncategorized" />
-            <label htmlFor="uncategorized">Uncategorized</label>
-          </li>
-          <li>
-            <input type="checkbox" id="formal-wear" />
-            <label htmlFor="formal-wear">Formal Wear</label>
-          </li>
-          <li>
-            <input type="checkbox" id="kids" />
-            <label htmlFor="kids">Kids</label>
-          </li>
-          <li>
-            <input type="checkbox" id="ladies" />
-            <label htmlFor="ladies">Ladies</label>
-          </li>
-          <li>
-            <input type="checkbox" id="outerwear" />
-            <label htmlFor="outerwear">Outerwear</label>
-          </li>
-          <li>
-            <input type="checkbox" id="winter-clothes" />
-            <label htmlFor="winter-clothes">Winter Clothes</label>
-          </li>
-          <li>
-            <input type="checkbox" id="winter-jersey" />
-            <label htmlFor="winter-jersey">Winter Jersey</label>
-          </li>
+          {categories.map((cat) => (
+            <li key={cat}>
+              <input
+                type="checkbox"
+                id={cat}
+                checked={selectedCategories.includes(cat)}
+                onChange={() => onCategoryChange(cat)}
+              />
+              <label htmlFor={cat}>{cat}</label>
+            </li>
+          ))}
         </ul>
       </div>
 
@@ -58,17 +55,22 @@ const Sidebar = () => {
         <div className="price-range-container">
           <input
             type="range"
-            min="1000"
-            max="4000"
-            value={priceRange}
-            step="100"
-            onChange={handlePriceChange}
+            min={minPrice}
+            max={maxPrice}
+            value={localPrice}
+            step={Math.max(1, Math.floor((maxPrice - minPrice) / 20))}
+            onChange={(e) =>
+            {
+              setLocalPrice(Number(e.target.value));
+              onPriceChange([minPrice, Number(e.target.value)]);
+            }}
             className="price-range-slider"
+            style={{ width: "100%" }}
           />
           <div className="price-range-labels">
-            <span>1000</span>
-            <span>{priceRange}</span>
-            <span>4000</span>
+            <span>{minPrice}</span>
+            <span>{localPrice}</span>
+            <span>{maxPrice}</span>
           </div>
         </div>
       </div>

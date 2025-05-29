@@ -1,23 +1,45 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./Products.css";
 import useProducts from "components/Contexts/Products/useProducts";
-import { BounceLoader } from "react-spinners";
+import useCart from "components/Contexts/Cart/useCart";
 
-const Products = () => {
-  const { products } = useProducts();
+const Products = () =>
+{
+  const { products, getProducts } = useProducts();
+  const { cartItems, addCartItem } = useCart();
+  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() =>
+  {
+    getProducts(); // Fetch all products for homepage
+    // eslint-disable-next-line
+  }, []);
+
+  if (!products || products.length === 0)
+  {
+    return null; // Don't render anything if no products
+  }
 
   const productsToShow = products.slice(currentIndex, currentIndex + 5);
 
-  const nextProduct = () => {
+  const nextProduct = () =>
+  {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % (products.length - 4));
   };
 
-  const prevProduct = () => {
+  const prevProduct = () =>
+  {
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? products.length - 5 : prevIndex - 1
     );
+  };
+
+  const handleAddToCart = async (productId) =>
+  {
+    await addCartItem(productId);
+    navigate("/cart");
   };
 
   return (
@@ -37,7 +59,8 @@ const Products = () => {
                 <img
                   src={product.imgSrc}
                   alt={product.name}
-                  onError={(e) => {
+                  onError={(e) =>
+                  {
                     e.target.src = "/placeholder-image.jpg"; // Handle image errors
                   }}
                 />
@@ -46,9 +69,10 @@ const Products = () => {
 
                   <button
                     className="cart-button"
-                    disabled={false} // Add logic if needed for cart functionality
+                    onClick={() => handleAddToCart(product._id)}
+                    disabled={cartItems.some((item) => item.product === product._id)}
                   >
-                    Add to Cart
+                    {cartItems.some((item) => item.product === product._id) ? "In Cart" : "Add to Cart"}
                   </button>
 
                   <p>

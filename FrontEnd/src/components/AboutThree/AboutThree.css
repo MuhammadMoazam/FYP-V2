@@ -1,19 +1,11 @@
-
-/*  */
-/* 
-
-
-/*  */
 /* Testimonial Section */
-/*  */
-/*  */
 /* General Section Styling */
 .testimonial-section {
   margin-top: 40px;
-    padding-top: 60px;
-    padding-bottom: 60px ;
-    padding-left: 120px;
-    padding-right: 120px;
+  padding-top: 60px;
+  padding-bottom: 60px;
+  padding-left: 120px;
+  padding-right: 120px;
   background-color: #ffffff;
   text-align: center;
   font-family: Arial, sans-serif;
@@ -43,8 +35,8 @@
 
 /* Grid Layout for Logos */
 .logo-grid {
-    padding-left: 12%;
-    padding-right: 12%;
+  padding-left: 12%;
+  padding-right: 12%;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 40px;
@@ -67,24 +59,29 @@
 /* Logo Icon Styling */
 .company-logo {
   font-size: 40px;
-  color: #555555; /* Default gray */
+  color: #555555;
+  /* Default gray */
 }
 
 /* Company-Specific Logo Colors */
 .apple {
-  color: #333333; /* Apple's Black/Grey */
+  color: #333333;
+  /* Apple's Black/Grey */
 }
 
 .amazon {
-  color: #ff9900; /* Amazon's Orange */
+  color: #ff9900;
+  /* Amazon's Orange */
 }
 
 .google {
-  color: #4285f4; /* Google's Blue */
+  color: #4285f4;
+  /* Google's Blue */
 }
 
 .microsoft {
-  color: #f25022; /* Microsoft's Orange */
+  color: #f25022;
+  /* Microsoft's Orange */
 }
 
 /* Responsive Design: 2 Columns on Medium Screens */
@@ -92,15 +89,17 @@
   .logo-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-    .testimonial-section{
-      padding: 10px;
-    }
+
+  .testimonial-section {
+    padding: 10px;
+  }
 }
+
 @media (max-width: 1024px) {
-  
-    .testimonial-section{
-      padding: 20px;
-    }
+
+  .testimonial-section {
+    padding: 20px;
+  }
 }
 
 

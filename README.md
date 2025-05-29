@@ -1,127 +1,180 @@
-# Urban Clothe - Microservices Architecture
+# Urban Clothe
 
-Urban Clothe is an e-commerce application initially developed as a monolithic app and later transitioned to a microservices architecture. This repository contains the microservices-based version of the project.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Architecture Overview
+## Available Scripts
 
-The system is built using a Microservices Architecture, where each service handles a specific functionality. These services communicate with each other through REST APIs or gRPC.
+In the project directory, you can run:
 
-## Technologies Used
+### `npm start`
 
-Frontend: React.js (Client UI)
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-Backend Microservices: Node.js (Express.js), Python (FastAPI)
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-Database: MongoDB, PostgreSQL
+### `npm test`
 
-Message Broker: RabbitMQ/Kafka
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-Authentication: JWT, OAuth
+### `npm run build`
 
-Containerization & Orchestration: Docker, Kubernetes
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-API Gateway: Nginx or Express Gateway
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-Logging & Monitoring: Prometheus, Grafana
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-Cloud Deployment: AWS/Azure/GCP (Optional)
+### `npm run eject`
 
-## Microservices Overview
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-### 1. User Service
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Handles user authentication and profile management.
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-Uses JWT-based authentication.
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-Stores user data in MongoDB.
+## Learn More
 
-### 2. Product Service
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-Manages product catalog, categories, and details.
+To learn React, check out the [React documentation](https://reactjs.org/).
 
-Stores product information in MongoDB.
+### Code Splitting
 
-### 3. Order Service
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-Handles order placement, tracking, and history.
+### Analyzing the Bundle Size
 
-Stores order details in PostgreSQL.
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### 4. Payment Service
+### Making a Progressive Web App
 
-Manages payments via Stripe/PayPal.
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-Ensures secure transactions.
+### Advanced Configuration
 
-### 5. Inventory Service
-
-Tracks stock availability and updates product status.
-
-Stores inventory data in MongoDB.
-
-### 6. Notification Service
-
-Sends emails and SMS notifications for order updates.
-
-Uses RabbitMQ/Kafka for event-driven communication.
-
-## Getting Started
-
-### Prerequisites
-
-Ensure you have the following installed on your machine:
-
-Node.js (Latest LTS Version)
-
-Docker & Docker Compose
-
-Kubernetes (Optional for production-like environment)
-
-MongoDB & PostgreSQL (Locally or via Docker)
-
-### Installation & Running Locally
-
-Clone the Repository
-
-git clone https://github.com/yourusername/urban-clothe-microservices.git
-cd urban-clothe-microservices
-
-### Start All Services (Using Docker)
-
-docker-compose up --build
-
-### Running Individual Services
-
-Each service is located in its respective directory. Navigate to the service folder and run:
-
-npm install
-npm start
-
-### API Documentation
-
-API documentation is available via Swagger or Postman Collection.
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
 ### Deployment
 
-For cloud deployment, use Docker and Kubernetes.
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### Build Docker Images
+### `npm run build` fails to minify
 
-docker build -t urban-clothe/service-name .
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 
-### Push to Docker Hub
+# E-Commerce Application Deployment Guide
 
-docker push your-dockerhub-username/urban-clothe-service-name
+## Prerequisites
 
-### Deploy on Kubernetes
+- Azure Virtual Machine (Ubuntu 20.04 LTS or later)
+- Domain name pointing to your Azure VM
+- Docker and Docker Compose installed
+- SSL certificate (Let's Encrypt)
 
-kubectl apply -f kubernetes/deployment.yml
+## Deployment Steps
 
-### Contributing
+1. Clone the repository to your Azure VM:
+```bash
+git clone <your-repo-url>
+cd <your-repo-directory>
+```
 
-Feel free to fork the repository and contribute via Pull Requests.
+2. Configure Environment Variables:
+   - Update `.env.production` files in each service directory
+   - Set appropriate MongoDB credentials
+   - Update JWT secrets
+   - Configure API URLs
 
-### License
+3. SSL Certificate Setup:
+```bash
+# Install certbot
+sudo apt-get install certbot -y
 
-This project is licensed under the MIT License.
+# Get SSL certificate
+sudo certbot certonly --standalone -d your-domain.com
+
+# Copy certificates
+sudo mkdir -p ssl
+sudo cp /etc/letsencrypt/live/your-domain.com/fullchain.pem ssl/
+sudo cp /etc/letsencrypt/live/your-domain.com/privkey.pem ssl/
+```
+
+4. Update Configuration:
+   - Replace YOUR_AZURE_VM_DOMAIN in nginx.conf with your actual domain
+   - Update MongoDB credentials in docker-compose.yaml
+   - Configure JWT secrets in user-service
+
+5. Deploy the Application:
+```bash
+# Start the services
+sudo docker-compose up -d
+
+# Verify deployment
+sudo docker-compose ps
+```
+
+6. Monitor the Application:
+   - Check service health endpoints
+   - Monitor logs with `docker-compose logs -f`
+   - Set up monitoring tools (optional)
+
+## Service URLs
+
+- Frontend: https://your-domain.com
+- Product Service: https://your-domain.com/api/products
+- Cart Service: https://your-domain.com/api/cart
+- User Service: https://your-domain.com/api/auth
+- Order Service: https://your-domain.com/api/orders
+
+## Maintenance
+
+### SSL Certificate Renewal
+```bash
+sudo certbot renew
+```
+
+### Updating the Application
+```bash
+git pull
+sudo docker-compose up -d --build
+```
+
+### Backup MongoDB Data
+```bash
+docker exec mongodb mongodump --out /dump
+docker cp mongodb:/dump ./backup
+```
+
+## Troubleshooting
+
+1. Check service logs:
+```bash
+docker-compose logs [service-name]
+```
+
+2. Verify network connectivity:
+```bash
+docker network ls
+docker network inspect microservices-network
+```
+
+3. Check container health:
+```bash
+docker ps --format "{{.Names}}: {{.Status}}"
+```
+
+## Security Considerations
+
+1. Regularly update dependencies
+2. Monitor for security vulnerabilities
+3. Keep SSL certificates up to date
+4. Implement rate limiting
+5. Use secure environment variables
+6. Regular backups of MongoDB data

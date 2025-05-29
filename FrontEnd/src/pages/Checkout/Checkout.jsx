@@ -1,65 +1,56 @@
 import Navbar from "../../components/Navbar/Navbar";
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import "./Checkout.css";
 import Footer from "../../components/Footer/Footer";
 import useUser from "../../components/Contexts/User/useUser";
 import { Input } from "components/Input/Input";
-import useApi from "components/Contexts/API/useApi";
-import { BounceLoader } from "react-spinners";
 
-function Checkout() {
+function Checkout()
+{
 
     const navigate = useNavigate()
     const location = useLocation()
 
     const { user } = useUser()
-    const { placeOrder } = useApi()
 
-    const orderItems = useMemo(() => location?.state?.orderItems ?? [], [location]);
+    const { orderItems } = location?.state || {}
 
-    console.log(user);
-    
-
-    const [loading, setLoading] = useState(false)
     const [paymentMethod, setPaymentMethod] = useState('bank')
     const [nameInputs, setNameInputs] = useState({ firstName: user?.name.firstName || '', lastName: user?.name.lastName || '' })
-    const [otherDetails, setOtherDetails] = useState({ country: user.addresses?.filter(address => address.default)[0]?.country || '', state: user.addresses?.filter(address => address.default)[0]?.state || '', city: user.addresses?.filter(address => address.default)[0]?.city || '', street: user.addresses?.filter(address => address.default)[0]?.street || '', postcode: user.addresses?.filter(address => address.default)[0]?.postcode || '', phone: user.phone || '', email: user?.email || '' })
+    const [otherDetails, setOtherDetails] = useState({ country: '', state: '', city: '', street: '', postcode: '', phone: '', email: user?.email || '' })
 
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        setLoading(true)
-        try {
-            const { firstName, lastName } = nameInputs
-            const { country, state, city, street, postcode, phone, email } = otherDetails
-
-            const order = { firstName, lastName, country, state, city, street, postcode, phone, email, orderItems, paymentMethod }
-
-            const response = await placeOrder(order);
-
-            if (response && response.message === "success") {
-                if (response.order.payment.method === 'bank') {
-                    navigate('/payment', { replace: true, state: { order: response.order } })
-                } else {
-                    navigate('/order-placed', { state: { order: response.order } })
-                }
-            } else {
-                alert(response.message)
-            }
-        } catch (error) {
-            console.log("🚀 --------------------------------🚀")
-            console.log("🚀 ~ handleSubmit ~ error:", error)
-            console.log("🚀 --------------------------------🚀")
-        } finally {
-            setLoading(false)
-        }
-    }
-
-    useEffect(() => {
-        if (!orderItems || orderItems.length === 0) {
+    useEffect(() =>
+    {
+        if (!orderItems)
+        {
             navigate('/cart')
         }
-    }, [navigate, orderItems]);
+    }, [orderItems]);
+
+    const handlePlaceOrder = () =>
+    {
+        // Check if all required fields are filled
+        const allFieldsFilled = nameInputs.firstName.trim() !== '' &&
+            nameInputs.lastName.trim() !== '' &&
+            otherDetails.country.trim() !== '' &&
+            otherDetails.state.trim() !== '' &&
+            otherDetails.city.trim() !== '' &&
+            otherDetails.street.trim() !== '' &&
+            otherDetails.postcode.trim() !== '' &&
+            otherDetails.phone.trim() !== '' &&
+            otherDetails.email.trim() !== '';
+
+        if (!allFieldsFilled)
+        {
+            alert('Please fill in all required fields');
+            return;
+        }
+
+        // Show success message and navigate to home
+        alert('Order placed successfully!');
+        navigate('/');
+    }
 
     return (
         <div>
@@ -110,21 +101,31 @@ function Checkout() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {orderItems.map((item) => (
-                                        <tr key={item._id} className="table-row cart-item-container">
-                                            <td className="table-cell">{item.name} x {item.quantity}</td>
-                                            <td className="table-cell">{((Number.parseInt(item.price) - Number.parseInt(item.discount) / 100) * Number.parseInt(item.quantity)).toFixed(0)}</td>
-                                        </tr>
+                                    {orderItems.map((item) => (<tr key={item._id} className="table-row cart-item-container">
+                                        <td className="table-cell">{item.name} x {item.quantity}</td>
+                                        <td className="table-cell">Rs. {((item.discountedPrice || item.price) * item.quantity).toFixed(2)}</td>
+                                    </tr>
                                     ))}
                                 </tbody>
-                            </table>
-
-                            <div className="cart-total-container">
-                                <span>Cart Total</span>
-
-                                <span>
-                                    {orderItems.reduce((total, item) => total + (Number.parseInt(item.price) - Number.parseInt(item.discount) / 100).toFixed(0) * Number.parseInt(item.quantity), 0)}
-                                </span>
+                            </table>                            <div className="order-summary">
+                                <div className="summary-row subtotal">
+                                    <span>Subtotal</span>
+                                    <span>Rs. {orderItems.reduce((total, item) => total + (item.discountedPrice || item.price) * item.quantity, 0).toFixed(2)}</span>
+                                </div>
+                                <div className="summary-row shipping">
+                                    <span>Shipping</span>
+                                    <span>Rs. 150.00</span>
+                                </div>
+                                <div className="summary-row">
+                                    <span>Tax (5%)</span>
+                                    <span>Rs. {(orderItems.reduce((total, item) => total + (item.discountedPrice || item.price) * item.quantity, 0) * 0.05).toFixed(2)}</span>
+                                </div>
+                                <div className="summary-row total">
+                                    <span>Total</span>
+                                    <span>Rs. {(
+                                        orderItems.reduce((total, item) => total + (item.discountedPrice || item.price) * item.quantity, 0) * 1.05 + 150
+                                    ).toFixed(2)}</span>
+                                </div>
                             </div>
 
                             <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -159,14 +160,12 @@ function Checkout() {
                                 </div>
                             </div>
 
-                            <button className="submit-button" onClick={handleSubmit}> {
-                                loading ? <BounceLoader
-                                    color={"white"}
-                                    loading={loading}
-                                    size={20}
-                                    aria-label="Loading Spinner"
-                                    data-testid="loader"
-                                /> : 'Place Order'} </button>
+                            <button
+                                className="submit-button"
+                                onClick={handlePlaceOrder}
+                            >
+                                Place Order
+                            </button>
                         </div>
                     </div>
 

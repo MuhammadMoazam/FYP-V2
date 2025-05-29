@@ -1,6 +1,4 @@
-Promise Section
-*/
-/* General Styles */
+/* Promise Section */
 /* General Styles */
 body {
   margin: 0;
@@ -15,7 +13,8 @@ body {
   align-items: center;
   height: 500px;
   justify-content: space-between;
-  background-color: #3d5afe; /* Blue background for content */
+  background-color: #3d5afe;
+  /* Blue background for content */
   color: #fff;
   position: relative;
   overflow: hidden;
@@ -31,18 +30,22 @@ body {
   top: 50%;
   transform: translateY(-50%);
   z-index: 1;
-  width: 40%; /* Control the width of the image */
-  height: 500px; /* Control the height of the image */
-  background-image: url('../../Assets/Images/about-1.jpg'); /* Replace with the actual image URL */
+  width: 40%;
+  /* Control the width of the image */
+  height: 500px;
+  /* Control the height of the image */
+  background-image: url('../../Assets/Images/about-1.jpg') no-repeat;
+  /* Image URL */
   background-size: cover;
   background-position: center;
   border-radius: 12px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-  background-color: rgba(0, 0, 0, 0.1)  ;
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .promise-content {
-  margin-left: 50%; /* Push the content to the right */
+  margin-left: 50%;
+  /* Push the content to the right */
   padding: 20px;
   max-width: 40%;
   z-index: 2;
@@ -97,8 +100,10 @@ body {
     top: 0;
     transform: none;
     margin-bottom: 20px;
-    width: 100%; /* Make image take full width on small screens */
-    height: 350px; /* Adjust height on small screens */
+    width: 100%;
+    /* Make image take full width on small screens */
+    height: 350px;
+    /* Adjust height on small screens */
   }
 
   .promise-content {
@@ -112,7 +117,9 @@ body {
   }
 
   .promise-image {
-    width: 100%; /* Make image responsive */
-    height: 250px; /* Adjust the height for small screens */
+    width: 100%;
+    /* Make image responsive */
+    height: 250px;
+    /* Adjust the height for small screens */
   }
 }

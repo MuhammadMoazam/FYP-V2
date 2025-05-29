@@ -7,13 +7,11 @@ export const UserContext = createContext(undefined);
 const UserContextProvider = ({ children }) => {
 
     const [loggedIn, setLoggedIn] = useState(false);
-    const [authToken, setAuthToken] = useState(null);
     const [user, setUser] = useState(null);
 
     const login = (data) => {
         //set cookie
         Cookies.set('session', data.token, { expires: 7 })
-        setAuthToken(data.token)
         //set user data
         setUser(data.user)
 
@@ -22,7 +20,6 @@ const UserContextProvider = ({ children }) => {
 
     const logout = () => {
         Cookies.remove('session')
-        setAuthToken(null)
         setUser(null)
         setLoggedIn(false)
     }
@@ -33,11 +30,9 @@ const UserContextProvider = ({ children }) => {
 
     const contextValue = {
         loggedIn,
-        authToken,
         user,
         login,
         logout,
-        setAuthToken,
         updateUserData,
     };
 
