@@ -125,12 +125,6 @@ services:
       timeout: 3s
       retries: 3
 
-  model-api:
-    build:
-      context: ./Backend/ModelAPI
-    ports:
-      - "5000:5000"
-
 networks:
   microservices-network:
     driver: bridge
